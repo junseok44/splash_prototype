@@ -3,11 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Splash prototype" />
+    <meta property="og:image" content="src/assets/title_temp.png" />
+    <meta
+      property="og:description"
+      content="스위치는 없지만 스플래툰은 하고싶어"
+    />
+    <title>splash</title>
 
-    <title>Sketch</title>
-
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="src/style.css" />
     <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
       .p5Canvas {
         border: 1px solid black;
       }
@@ -16,11 +26,12 @@
     <script src="libraries/p5.sound.min.js"></script>
   </head>
   <body>
-    <script src="system/Camera.js"></script>
-    <script src="system/InkPattern.js"></script>
-    <script src="objects/Bullet.js"></script>
-    <script src="objects/Player.js"></script>
-    <script src="objects/Obstacle.js"></script>
-    <script src="sketch.js"></script>
+    <script src="src/objects/Player.js"></script>
+    <script src="src/objects/Attacker.js"></script>
+    <script src="src/objects/Defender.js"></script>
+    <script src="src/objects/Bullet.js"></script>
+    <script src="src/objects/InkPattern.js"></script>
+    <script src="src/system/UI.js"></script>
+    <script src="src/sketch.js"></script>
   </body>
 </html>
