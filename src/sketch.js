@@ -47,6 +47,9 @@ function setup() {
   });
   ink = new InkPattern(100);
   ui = new UI();
+
+  // 이부분 건들지 말라고 하셨는데 일단 적어뒀습니다.. 나중에 리스폰할 때도 initialize 쓸 것 같아서요
+  player2.minimiInitialize();
 }
 
 function draw() {
@@ -73,11 +76,16 @@ function draw() {
       player2.display();
       player2.move();
       player2.attack();
+      //minimi 보이기
       player2.minimiDisplay();
 
+      //minimi, bullet 충돌
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();
         player2.minimiCollide(bullets[i]);
+        if (bullets[i].isEnd && bullets[i].isEndDrawing) {
+          bullets.splice(i, 1);
+        }
       }
 
       break;

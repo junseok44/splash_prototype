@@ -30,19 +30,27 @@ class Defender extends Player {
       pop();
     }
   }
-  minimiDisplay() {
-    let numCircles = 10;
-    let angle = TWO_PI / numCircles;
 
+  //minimi  10개 생성
+  minimiInitialize() {
+    let numCircles = 10;
+
+    for (let i = 0; i < numCircles; i++) {
+      let angle = (TWO_PI / numCircles) * i;
+      this.circles.push(angle);
+    }
+  }
+
+  //minimi 공전
+  minimiDisplay() {
     stroke(0);
     fill(255);
 
-    for (let i = 0; i < numCircles; i++) {
+    for (let i = 0; i < this.circles.length; i++) {
       push();
       translate(this.x, this.y);
       let rotation = millis() * 0.001;
-      let circleAngle = angle * i + rotation;
-      this.circles[i] = circleAngle;
+      let circleAngle = this.circles[i] + rotation;
       rotate(circleAngle);
       ellipse(
         (this.width * 2) / 3,
@@ -53,19 +61,28 @@ class Defender extends Player {
       pop();
     }
   }
+
+  //minimi와 bullet 충돌시 둘 다 사라짐
   minimiCollide(bullet) {
-    console.log(bullet.x, bullet.y);
+    let circlesToRemove = [];
+
     for (let i = this.circles.length - 1; i >= 0; i--) {
       let d = dist(
-        bullet.x,
-        bullet.y,
+        bullet.coordX,
+        bullet.coordY,
         this.x + ((this.width * 2) / 3) * cos(this.circles[i]),
         this.y + ((this.height * 2) / 3) * sin(this.circles[i])
       );
+
       if (d < this.width / 3 / 2 + bullet.width / 2) {
-        console.log("hit");
-        this.circles[i].splice(i, 1);
+        circlesToRemove.push(i);
+        bullet.coordX = 9999;
+        bullet.coordY = 9999;
       }
+    }
+
+    for (let i of circlesToRemove) {
+      this.circles.splice(i, 1);
     }
   }
 }
