@@ -73,10 +73,13 @@ function draw() {
       player2.display();
       player2.move();
       player2.attack();
+      player2.minimiDisplay();
 
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();
+        player2.minimiCollide(bullets[i]);
       }
+
       break;
     case "game_result":
       break;
