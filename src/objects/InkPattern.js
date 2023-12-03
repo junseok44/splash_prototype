@@ -21,6 +21,12 @@ class InkPattern {
     this.ink = InkPattern.makeInkPattern(patternSize);
   }
 
+  static originalInkMaxSize = 40;
+
+  changeInkPatternSize(maxSize) {
+    this.ink = InkPattern.makeInkPattern(this.patternSize, maxSize);
+  }
+
   getInkPattern() {
     var idx = parseInt(random(0, this.patternSize - 1));
     return this.ink[idx];
