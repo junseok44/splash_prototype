@@ -18,7 +18,7 @@ class Defender extends Player {
       pg.fill(255);
       pg.rect(0, -20, this.width, this.height);
       pg.pop();
-
+      ㅔ;
       this.isAttacked = true;
       setTimeout(() => {
         this.isAttacked = false;

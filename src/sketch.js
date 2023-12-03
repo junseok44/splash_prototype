@@ -30,8 +30,8 @@ function setup() {
     attack: 82,
   });
   player2 = new Defender({
-    x: 400,
-    y: 400,
+    x: 200,
+    y: 100,
     width: 50,
     height: 50,
     bullets: bullets,
@@ -46,13 +46,11 @@ function setup() {
     pg: pg,
   });
   ink = new InkPattern(100);
-  ui = new UI();
+  ui = new UI({ player1, player2 });
 }
 
 function draw() {
   background(255);
-
-  ui.drawUI(phase);
 
   switch (phase) {
     case "intro":
@@ -62,21 +60,55 @@ function draw() {
     case "tutorial":
       break;
     case "main_game":
-      // 프로토타입은 여기서만 코드 작성해주세요~
-
       image(pg, 0, 0);
+      ui.drawMainGameScreen();
 
       player1.display();
-      player1.move();
-      player1.attack();
-
       player2.display();
-      player2.move();
-      player2.attack();
+
+      if (!player1.isDead) {
+        player1.move();
+        player1.attack();
+      }
+
+      if (!player2.isDead) {
+        player2.move();
+        player2.attack();
+      }
 
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();
+
+        if (bullets[i].isEnd && bullets[i].isEndDrawing) {
+          // 총알이 끝까지 가서 잉크가 퍼졌을때.
+          bullets.splice(i, 1);
+        } else {
+          if (!player2.isDead && player2.isCollidedWithCircle(bullets[i])) {
+            // 총알이 플레이어에 맞았을때.
+            bullets.splice(i, 1);
+            player2.hit();
+            if (player2.life == 0) {
+              player2.dead();
+            }
+          }
+        }
       }
+
+      player1.isCollidedWithPlayer({
+        x: player2.x,
+        y: player2.y,
+        radius: Math.sqrt(
+          Math.pow(player2.width / 2, 2) + Math.pow(player2.height / 2, 2)
+        ),
+      });
+      player2.isCollidedWithPlayer({
+        x: player1.x,
+        y: player1.y,
+        radius: Math.sqrt(
+          Math.pow(player1.width / 2, 2) + Math.pow(player1.height / 2, 2)
+        ),
+      });
+
       break;
     case "game_result":
       break;

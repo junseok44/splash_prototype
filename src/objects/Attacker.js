@@ -1,6 +1,7 @@
 class Attacker extends Player {
   constructor(args) {
     super(args);
+    this.deg = PI / 2;
   }
 
   attack() {

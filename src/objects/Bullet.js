@@ -10,11 +10,21 @@ class Bullet {
     this.isEnd = false;
     this.endTimer = null;
     this.isEndDrawing = false;
-    this.distance = parseInt(random(150, 200));
+    // this.distance = parseInt(random(150, 200));
+    this.distance = 200;
+    this.coordX = x;
+    this.coordY = y;
   }
 
+  static BulletColor = "rgb(0,0,0)";
+
   move() {
-    this.yPos -= 10;
+    const angle = Math.PI / 2 - this.deg;
+    const deltaX = 10 * Math.cos(angle);
+    const deltaY = 10 * Math.sin(angle);
+    this.coordX += deltaX;
+    this.coordY -= deltaY;
+    this.yPos -= 10; // Update yPos
   }
 
   display() {
@@ -26,6 +36,7 @@ class Bullet {
       this.isEnd = true;
     } else if (this.yPos > -this.distance) {
       this.move();
+      stroke(Bullet.BulletColor);
       fill(this.color);
       noStroke();
       ellipse(0, this.yPos, this.width, this.height);
