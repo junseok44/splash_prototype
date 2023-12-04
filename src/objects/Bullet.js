@@ -10,8 +10,7 @@ class Bullet {
     this.isEnd = false;
     this.endTimer = null;
     this.isEndDrawing = false;
-    // this.distance = parseInt(random(150, 200));
-    this.distance = 200;
+    this.distance = parseInt(random(150, 200));
     this.coordX = x;
     this.coordY = y;
   }
@@ -51,13 +50,15 @@ class Bullet {
         this.deg,
         this.color
       );
-
       if (!this.endTimer) {
         this.endTimer = setTimeout(() => {
           this.isEndDrawing = true;
         }, 100);
       }
     } else if (this.isEnd && this.isEndDrawing) {
+      //bullet 터지고나서도 그 자리에 남아있는 거 해결하는 다른 방법
+      //this.coordX = 9999;
+      //this.coordY = 9999;
     }
 
     pop();
