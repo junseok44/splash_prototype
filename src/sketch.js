@@ -1,5 +1,3 @@
-//https://creativecommons.org/licenses/by-sa/3.0/
-
 let player1;
 let player2;
 let bullets = [];
@@ -42,14 +40,64 @@ function setup() {
     d: 40,
     rotate_l: 188,
     rotate_r: 190,
-    attack: 191,
+    //attack: 191,
     pg: pg,
   });
   ink = new InkPattern(100);
   ui = new UI({ player1, player2 });
 
-  // 이부분 건들지 말라고 하셨는데 일단 적어뒀습니다.. 나중에 리스폰할 때도 initialize 쓸 것 같아서요
   player2.minimiInitialize();
+  setInterval(() => {
+    calculateInkAreaRatio(); // 잉크 면적 비율 계산
+  }, 10000);
+}
+
+let inkAreaRatio = 0;
+function calculateInkAreaRatio() {
+  pg.loadPixels();
+
+  let totalPixels = pg.pixels.length / 4;
+  let inkedPixels = 0;
+
+  for (let i = 0; i < pg.pixels.length; i += 4) {
+    let r = pg.pixels[i];
+    let g = pg.pixels[i + 1];
+    let b = pg.pixels[i + 2];
+    let a = pg.pixels[i + 3];
+
+    // 특정 색상 (rgb(255,78,202))이면 inkedPixels를 증가
+    if (colorMatch(r, g, b, a, 255, 78, 202, 255, 100)) {
+      inkedPixels++;
+    }
+  }
+  pg.updatePixels();
+
+  // inkAreaRatio를 100이 넘지 않도록 조정
+  inkAreaRatio = min((inkedPixels / totalPixels) * 100, 100);
+
+  // inkAreaRatio를 0 미만으로 되지 않도록 조정
+  inkAreaRatio = max(inkAreaRatio, 0);
+
+  return inkAreaRatio;
+}
+
+function colorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold = 20) {
+  return (
+    Math.abs(r1 - r2) <= threshold &&
+    Math.abs(g1 - g2) <= threshold &&
+    Math.abs(b1 - b2) <= threshold &&
+    Math.abs(a1 - a2) <= threshold
+  );
+}
+
+function drawMainGameScreen() {
+  textSize(15);
+  text(`Attacker: ${inkAreaRatio.toFixed(0)}%`, 10, 60);
+
+  text(`Defender:${100 - inkAreaRatio.toFixed(0)}%`, 10, 80);
+
+  text("플레이어1 이동: wasd 회전 qe 잉크총 발사 r", 10, 20);
+  text("플레이어2 이동: 방향키 회전 < > 바닥 청소 /", 10, 40);
 }
 
 function draw() {
@@ -63,6 +111,9 @@ function draw() {
     case "tutorial":
       break;
     case "main_game":
+      drawMainGameScreen(); // 게임 화면 그리기
+      // 프로토타입은 여기서만 코드 작성해주세요~
+
       image(pg, 0, 0);
       ui.drawMainGameScreen();
 
@@ -84,6 +135,11 @@ function draw() {
 
       for (let i = 0; i < player2.minimiArray.length; i++) {
         let minimi = player2.minimiArray[i];
+
+        // push();
+        // fill(255, 0, 0);
+        // ellipse(minimi.x, minimi.y, minimi.width, minimi.width);
+        // pop();
         if (
           player1.isCollidedWithCircle({
             coordX: minimi.x,
