@@ -6,8 +6,8 @@ let isAttackWithFreeze = true;
 let isDefenseWithFreeze = true;
 
 let photos = [];
-let currentPhoto;
 let choices = [];
+let currentPhoto;
 let currentChoice;
 let backgroundImage;
 let foregroundImage;
@@ -23,6 +23,8 @@ let currentRandomImage = null;
 //percentages
 let pinkPercentage = 0;
 let lastUpdateTime = 0;
+let inkAreaRatio = 0;
+
 //extra
 let picWidth;
 let picHeight;
@@ -36,6 +38,7 @@ let ui;
 let phase = "main_game";
 
 let BASE_DIR = "src/assets/image/";
+
 function preload() {
   // Load your images
   // backgroundImage = loadImage("../src/assets/images/Chess Basic.png");
@@ -116,11 +119,10 @@ function setup() {
 
   player2.minimiInitialize();
   setInterval(() => {
-    calculateInkAreaRatio(); // 잉크 면적 비율 계산
+    inkAreaRatio = calculateInkAreaRatio();
   }, 10000);
 }
 
-let inkAreaRatio = 0;
 function calculateInkAreaRatio() {
   pg.loadPixels();
 
@@ -149,6 +151,17 @@ function calculateInkAreaRatio() {
   return inkAreaRatio;
 }
 
+function makeItAsync(callback) {
+  return new Promise((resolve, reject) => {
+    try {
+      const result = callback();
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
 function colorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold = 20) {
   return (
     Math.abs(r1 - r2) <= threshold &&
@@ -159,13 +172,27 @@ function colorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold = 20) {
 }
 
 function drawMainGameScreen() {
-  textSize(15);
-  text(`Attacker: ${inkAreaRatio.toFixed(0)}%`, 10, 60);
-
-  text(`Defender:${100 - inkAreaRatio.toFixed(0)}%`, 10, 80);
-
+  push();
+  textSize(10);
   text("플레이어1 이동: wasd 회전 qe 잉크총 발사 r", 10, 20);
   text("플레이어2 이동: 방향키 회전 < > 바닥 청소 /", 10, 40);
+
+  textSize(20);
+  let inkRatioUIHeight = 60;
+  let inkRatioUIOffset = 250;
+
+  text(
+    `Attacker: ${inkAreaRatio.toFixed(0)}%`,
+    inkRatioUIOffset,
+    inkRatioUIHeight
+  );
+
+  text(
+    `Defender:${100 - inkAreaRatio.toFixed(0)}%`,
+    width - inkRatioUIOffset,
+    inkRatioUIHeight
+  );
+  pop();
 }
 
 function draw() {
@@ -186,31 +213,31 @@ function draw() {
   text(100 - nf(pinkPercentage, 2, 1), (16.93 * width) / 18, height / 3.2);
   image(pg, 0, 0);
 
-  function calculatePinkPercentage() {
-    let pinkCount = 0;
+  // function calculatePinkPercentage() {
+  //   let pinkCount = 0;
 
-    // Loop through each pixel on the canvas
-    for (let x = pg.width / 8; x < (7 * pg.width) / 8; x++) {
-      for (let y = pg.height / 4; y < pg.height; y++) {
-        // Get the color of the pixel
-        let pixelColor = pg.get(x, y);
+  //   // Loop through each pixel on the canvas
+  //   for (let x = pg.width / 8; x < (7 * pg.width) / 8; x++) {
+  //     for (let y = pg.height / 4; y < pg.height; y++) {
+  //       // Get the color of the pixel
+  //       let pixelColor = pg.get(x, y);
 
-        // Check if the pixel color is pink
-        if (
-          pixelColor[0] === 255 && // Red
-          pixelColor[1] === 78 && // Green
-          pixelColor[2] === 202 // Blue
-        ) {
-          pinkCount++;
-        }
-      }
-    }
+  //       // Check if the pixel color is pink
+  //       if (
+  //         pixelColor[0] === 255 && // Red
+  //         pixelColor[1] === 78 && // Green
+  //         pixelColor[2] === 202 // Blue
+  //       ) {
+  //         pinkCount++;
+  //       }
+  //     }
+  //   }
 
-    // Calculate the percentage of pink pixels
-    let totalPixels = (width * height * 9) / 16;
-    pinkPercentage = (pinkCount / totalPixels) * 100;
-    return pinkPercentage;
-  }
+  //   // Calculate the percentage of pink pixels
+  //   let totalPixels = (width * height * 9) / 16;
+  //   pinkPercentage = (pinkCount / totalPixels) * 100;
+  //   return pinkPercentage;
+  // }
 
   switch (phase) {
     case "intro":

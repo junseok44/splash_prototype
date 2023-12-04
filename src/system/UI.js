@@ -11,6 +11,9 @@ class UI {
   // 화면 양 옆의 여백
   static playerLifeUIOffset = 200;
   static playerLifeUIheight = 100;
+  static inkUIOffset = 100;
+  static inkUIheight = 60;
+
   static playerRespawnComment = `부활까지 남은 시간:`;
 
   drawUI(phase) {
@@ -82,8 +85,7 @@ class UI {
       textSize(20);
       textAlign(RIGHT);
       text(
-        UI.playerRespawnComment +
-          this.calculateRespawnLeftTime(this.player2DeadTime),
+        UI.Comment + this.calculateRespawnLeftTime(this.player2DeadTime),
         width - UI.playerLifeUIOffset,
         UI.playerLifeUIheight
       );
