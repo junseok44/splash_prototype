@@ -17,6 +17,19 @@ class Defender extends Player {
     this.defenseSlowItemTimer = 0; // 수비 감속 아이템 타이머
   }
 
+  //REVISED
+  changeControlsForAttackWithReverse() {
+    this.changeControls(39, 37, 40, 38, 188, 190, 191);
+  }
+
+  changeControlsForAttackWithFreeze() {
+    this.changeControls(50, 51, 52, 53, 54, 55, 56);
+  }
+
+  changeCleanAreaOffset(value) {
+    this.cleanAreaOffset = value;
+  }
+
   attack() {
     // 방향키가 눌리면 자동으로 공격
     if (keyIsDown(37) || keyIsDown(38) || keyIsDown(39) || keyIsDown(40)) {

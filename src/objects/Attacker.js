@@ -4,6 +4,14 @@ class Attacker extends Player {
     this.deg = PI / 2;
   }
 
+  changeControlsForDefenseWithReverse() {
+    this.changeControls(68, 65, 83, 87, 81, 69, 82);
+  }
+
+  changeControlsForDefenseWithFreeze() {
+    this.changeControls(110, 111, 112, 113, 114, 115, 116);
+  }
+
   attack() {
     if (keyIsDown(this.attackcode)) {
       push();

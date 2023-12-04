@@ -206,6 +206,17 @@ class Player {
     fill(0);
     pop();
   }
+
+  //REVISED
+  changeControls(l, r, u, d, rotate_l, rotate_r, attack) {
+    this.lcode = l;
+    this.rcode = r;
+    this.ucode = u;
+    this.dcode = d;
+    this.rotate_lcode = rotate_l;
+    this.rotate_rcode = rotate_r;
+    this.attackcode = attack;
+  }
 }
 
 // 회전을 고려하지 않은 함수 예제.

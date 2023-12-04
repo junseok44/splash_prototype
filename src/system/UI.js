@@ -9,8 +9,8 @@ class UI {
   }
 
   // 화면 양 옆의 여백
-  static playerLifeUIOffset = 100;
-  static playerLifeUIheight = 50;
+  static playerLifeUIOffset = 200;
+  static playerLifeUIheight = 100;
   static playerRespawnComment = `부활까지 남은 시간:`;
 
   drawUI(phase) {
