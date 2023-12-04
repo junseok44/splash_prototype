@@ -4,7 +4,7 @@ class Bullet {
     this.y = y;
     this.deg = deg;
     this.color = color;
-    this.attackSpeed = attackSpeed || 5;
+    this.attackSpeed = attackSpeed || 10;
 
     this.attackFastItemKey = 84;
     //일단 아이템 코드를 다르게...

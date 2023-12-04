@@ -45,17 +45,18 @@ function setup() {
   });
   ink = new InkPattern(100);
   ui = new UI();
-  // setInterval(() => {
-  //   calculateInkAreaRatio(); // 잉크 면적 비율 계산
-  // }, 3000);
+  setInterval(() => {
+    calculateInkAreaRatio(); // 잉크 면적 비율 계산
+  }, 10000);
 }
 
 let inkAreaRatio = 0;
 function calculateInkAreaRatio() {
+  pg.loadPixels();
+
   let totalPixels = pg.pixels.length / 4;
   let inkedPixels = 0;
 
-  pg.loadPixels();
   for (let i = 0; i < pg.pixels.length; i += 4) {
     let r = pg.pixels[i];
     let g = pg.pixels[i + 1];
@@ -63,7 +64,7 @@ function calculateInkAreaRatio() {
     let a = pg.pixels[i + 3];
 
     // 특정 색상 (rgb(255,78,202))이면 inkedPixels를 증가
-    if (r === 255 && g === 78 && b === 202 && a === 255) {
+    if (colorMatch(r, g, b, a, 255, 78, 202, 255, 100)) {
       inkedPixels++;
     }
   }
@@ -76,6 +77,15 @@ function calculateInkAreaRatio() {
   inkAreaRatio = max(inkAreaRatio, 0);
 
   return inkAreaRatio;
+}
+
+function colorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold = 20) {
+  return (
+    Math.abs(r1 - r2) <= threshold &&
+    Math.abs(g1 - g2) <= threshold &&
+    Math.abs(b1 - b2) <= threshold &&
+    Math.abs(a1 - a2) <= threshold
+  );
 }
 
 function drawMainGameScreen() {
