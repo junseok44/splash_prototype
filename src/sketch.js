@@ -4,7 +4,7 @@ let bullets = [];
 let pg;
 let ink;
 let ui;
-let inkAreaRatio = 0;
+
 let phase = "main_game";
 
 function setup() {
@@ -45,18 +45,17 @@ function setup() {
   });
   ink = new InkPattern(100);
   ui = new UI();
-
-  setInterval(() => {
-    calculateInkAreaRatio(); // 잉크 면적 비율 계산
-  }, 5000);
+  // setInterval(() => {
+  //   calculateInkAreaRatio(); // 잉크 면적 비율 계산
+  // }, 3000);
 }
 
-//점수계산 시스템
+let inkAreaRatio = 0;
 function calculateInkAreaRatio() {
-  pg.loadPixels();
+  let totalPixels = pg.pixels.length / 4;
   let inkedPixels = 0;
-  let totalPixels = pg.pixels.length;
 
+  pg.loadPixels();
   for (let i = 0; i < pg.pixels.length; i += 4) {
     let r = pg.pixels[i];
     let g = pg.pixels[i + 1];
@@ -68,12 +67,15 @@ function calculateInkAreaRatio() {
       inkedPixels++;
     }
   }
+  pg.updatePixels();
 
-  console.log(inkedPixels, totalPixels, pg.width * pg.height);
+  // inkAreaRatio를 100이 넘지 않도록 조정
+  inkAreaRatio = min((inkedPixels / totalPixels) * 100, 100);
 
-  console.log((inkedPixels / totalPixels) * 100);
+  // inkAreaRatio를 0 미만으로 되지 않도록 조정
+  inkAreaRatio = max(inkAreaRatio, 0);
 
-  inkAreaRatio = (inkedPixels / totalPixels) * 100;
+  return inkAreaRatio;
 }
 
 function drawMainGameScreen() {
@@ -99,9 +101,10 @@ function draw() {
     case "tutorial":
       break;
     case "main_game":
-      image(pg, 0, 0);
-
       drawMainGameScreen(); // 게임 화면 그리기
+      // 프로토타입은 여기서만 코드 작성해주세요~
+
+      image(pg, 0, 0);
 
       player1.display();
       player1.move();
@@ -113,7 +116,6 @@ function draw() {
 
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();
-        bullets[i].move(); // 이 부분이 추가되었습니다.
       }
       break;
     case "game_result":

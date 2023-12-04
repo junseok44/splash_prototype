@@ -33,7 +33,8 @@ class InkPattern {
     pg.translate(x, y);
     pg.rotate(deg);
     pg.fill(color);
-    for (var i = 0; i < this.ink[i].length; i++) {
+    for (var i = 0; i < this.ink[idx].length; i++) {
+      //수정
       pg.curveVertex(this.ink[idx][i].x, this.ink[idx][i].y - distance);
     }
     pg.endShape();
