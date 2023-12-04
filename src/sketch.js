@@ -82,6 +82,22 @@ function draw() {
       //minimi 보이기
       player2.minimiDisplay();
 
+      for (let i = 0; i < player2.minimiArray.length; i++) {
+        let minimi = player2.minimiArray[i];
+        if (
+          player1.isCollidedWithCircle({
+            coordX: minimi.x,
+            coordY: minimi.y,
+            width: minimi.width,
+          })
+        ) {
+          player1.hit();
+          if (player1.life == 0) {
+            player1.dead();
+          }
+        }
+      }
+
       //minimi, bullet 충돌
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();

@@ -3,7 +3,7 @@ class Defender extends Player {
     super(args);
     this.pg = args.pg;
     this.circles = [];
-    // this.minimiCoords = [];
+    this.minimiArray = [];
   }
 
   attack() {
@@ -44,8 +44,10 @@ class Defender extends Player {
 
   //minimi 공전
   minimiDisplay() {
+    push();
     stroke(0);
     fill(255);
+    this.minimiArray = [];
 
     for (let i = 0; i < this.circles.length; i++) {
       push();
@@ -59,12 +61,14 @@ class Defender extends Player {
         this.width / 3,
         this.height / 3
       );
-      // this.minimiCoords.push({
-      //   x: this.x + ((this.width * 2) / 3) * cos(this.circles[i]),
-      //   y: this.y + ((this.height * 2) / 3) * sin(this.circles[i]),
-      // });
+      this.minimiArray.push({
+        x: this.x + ((this.width * 2) / 3) * cos(this.circles[i]),
+        y: this.y + ((this.height * 2) / 3) * sin(this.circles[i]),
+        width: this.width / 3,
+      });
       pop();
     }
+    pop();
   }
 
   //minimi와 bullet 충돌시 둘 다 사라짐
