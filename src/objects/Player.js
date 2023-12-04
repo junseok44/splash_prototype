@@ -125,22 +125,37 @@ class Player {
 
   move() {
     let diagonal = (this.width / 2) * Math.sqrt(2);
-    let uiHeight = 48;
 
     if (keyIsDown(this.lcode)) {
-      if (this.x <= diagonal || this.collisionSide == "left") return;
+      if (
+        this.x <= diagonal + ui.horizontalGridOffset ||
+        this.collisionSide == "left"
+      )
+        return;
       this.x -= 5;
     }
     if (keyIsDown(this.rcode)) {
-      if (this.x >= width - diagonal || this.collisionSide == "right") return;
+      if (
+        this.x >= width - diagonal - ui.horizontalGridOffset ||
+        this.collisionSide == "right"
+      )
+        return;
       this.x += 5;
     }
     if (keyIsDown(this.ucode)) {
-      if (this.y <= diagonal + uiHeight || this.collisionSide == "top") return;
+      if (
+        this.y <= diagonal + ui.UIHeight + ui.verticalGridOffset ||
+        this.collisionSide == "top"
+      )
+        return;
       this.y -= 5;
     }
     if (keyIsDown(this.dcode)) {
-      if (this.y >= height - diagonal || this.collisionSide == "bottom") return;
+      if (
+        this.y >= height - diagonal - ui.verticalGridOffset ||
+        this.collisionSide == "bottom"
+      )
+        return;
       this.y += 5;
     }
     if (keyIsDown(this.rotate_lcode)) {

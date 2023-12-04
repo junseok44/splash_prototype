@@ -3,38 +3,26 @@ class UI {
   constructor(args) {
     this.player1 = args.player1;
     this.player2 = args.player2;
+    this.canvasWidth = width;
+    this.canvasHeight = height;
 
     this.player1DeadTime = 0;
     this.player2DeadTime = 0;
+
+    this.UIHeight = (this.canvasHeight / 100) * 20;
+    this.horizontalGridOffset = (this.canvasWidth / 100) * 11;
+    this.verticalGridOffset = (width / 100) * 3;
   }
 
   // 화면 양 옆의 여백
   static playerLifeUIOffset = 200;
   static playerLifeUIheight = 100;
-  static inkUIOffset = 100;
-  static inkUIheight = 60;
+  static inkRatioUIOffset = 250;
+  static inkRatioUIheight = 60;
+
+  // TODO 임시로 설정.
 
   static playerRespawnComment = `부활까지 남은 시간:`;
-
-  drawUI(phase) {
-    switch (phase) {
-      case "intro":
-        this.drawTitleScreen();
-        break;
-      case "select_character":
-        this.drawSelectCharacterScreen();
-        break;
-      case "tutorial":
-        this.drawTutorialScreen();
-        break;
-      case "main_game":
-        this.drawMainGameScreen();
-        break;
-      case "game_result":
-        this.drawGameResultScreen();
-        break;
-    }
-  }
 
   calculateRespawnLeftTime(deadTime) {
     return Math.floor(
@@ -51,10 +39,24 @@ class UI {
 
   drawTutorialScreen() {}
 
-  drawMainGameScreen() {
+  drawMainGameScreen(inkAreaRatio) {
     textSize(15);
     text("플레이어1 이동: wasd 회전 qe 잉크총 발사 r", 10, 20);
     text("플레이어2 이동: 방향키 회전 < > 바닥 청소 /", 10, 40);
+
+    textSize(20);
+
+    text(
+      `Attacker: ${inkAreaRatio.toFixed(0)}%`,
+      UI.inkRatioUIOffset,
+      UI.inkRatioUIheight
+    );
+
+    text(
+      `Defender:${100 - inkAreaRatio.toFixed(0)}%`,
+      width - UI.inkRatioUIOffset,
+      UI.inkRatioUIheight
+    );
 
     // attacker 죽었을때 부활까지 남은 시간 표시
     if (this.player1.isDead) {

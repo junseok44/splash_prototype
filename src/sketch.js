@@ -83,6 +83,7 @@ function setup() {
   rectMode(CENTER);
   pg = createGraphics(windowWidth, windowHeight);
   pg.noStroke();
+  system = new System({ pg });
   player1 = new Attacker({
     x: windowWidth / 2 - 100,
     y: windowHeight / 2,
@@ -115,130 +116,16 @@ function setup() {
     pg: pg,
   });
   ink = new InkPattern(100);
-  ui = new UI({ player1, player2 });
+  ui = new UI({ player1, player2, width, height });
 
   player2.minimiInitialize();
+
   setInterval(() => {
-    inkAreaRatio = calculateInkAreaRatio();
+    system.calculateInkAreaRatio();
   }, 10000);
 }
 
-function calculateInkAreaRatio() {
-  pg.loadPixels();
-
-  let totalPixels = pg.pixels.length / 4;
-  let inkedPixels = 0;
-
-  for (let i = 0; i < pg.pixels.length; i += 4) {
-    let r = pg.pixels[i];
-    let g = pg.pixels[i + 1];
-    let b = pg.pixels[i + 2];
-    let a = pg.pixels[i + 3];
-
-    // 특정 색상 (rgb(255,78,202))이면 inkedPixels를 증가
-    if (colorMatch(r, g, b, a, 255, 78, 202, 255, 100)) {
-      inkedPixels++;
-    }
-  }
-  pg.updatePixels();
-
-  // inkAreaRatio를 100이 넘지 않도록 조정
-  inkAreaRatio = min((inkedPixels / totalPixels) * 100, 100);
-
-  // inkAreaRatio를 0 미만으로 되지 않도록 조정
-  inkAreaRatio = max(inkAreaRatio, 0);
-
-  return inkAreaRatio;
-}
-
-function makeItAsync(callback) {
-  return new Promise((resolve, reject) => {
-    try {
-      const result = callback();
-      resolve(result);
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-function colorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold = 20) {
-  return (
-    Math.abs(r1 - r2) <= threshold &&
-    Math.abs(g1 - g2) <= threshold &&
-    Math.abs(b1 - b2) <= threshold &&
-    Math.abs(a1 - a2) <= threshold
-  );
-}
-
-function drawMainGameScreen() {
-  push();
-  textSize(10);
-  text("플레이어1 이동: wasd 회전 qe 잉크총 발사 r", 10, 20);
-  text("플레이어2 이동: 방향키 회전 < > 바닥 청소 /", 10, 40);
-
-  textSize(20);
-  let inkRatioUIHeight = 60;
-  let inkRatioUIOffset = 250;
-
-  text(
-    `Attacker: ${inkAreaRatio.toFixed(0)}%`,
-    inkRatioUIOffset,
-    inkRatioUIHeight
-  );
-
-  text(
-    `Defender:${100 - inkAreaRatio.toFixed(0)}%`,
-    width - inkRatioUIOffset,
-    inkRatioUIHeight
-  );
-  pop();
-}
-
 function draw() {
-  //background image settings
-  image(backgroundImage, 0, 0, width, height);
-  //percentage(pixels)
-  if (millis() - lastUpdateTime > 10000) {
-    // pinkPercentage = calculatePinkPercentage();
-    lastUpdateTime = millis();
-  }
-
-  textAlign(CENTER, CENTER);
-  textSize(40);
-  textStyle(BOLD);
-  fill(80, 165, 215);
-  text(nf(pinkPercentage, 2, 1), width / 18, height / 3.2);
-  fill(115, 20, 150);
-  text(100 - nf(pinkPercentage, 2, 1), (16.93 * width) / 18, height / 3.2);
-  image(pg, 0, 0);
-
-  // function calculatePinkPercentage() {
-  //   let pinkCount = 0;
-
-  //   // Loop through each pixel on the canvas
-  //   for (let x = pg.width / 8; x < (7 * pg.width) / 8; x++) {
-  //     for (let y = pg.height / 4; y < pg.height; y++) {
-  //       // Get the color of the pixel
-  //       let pixelColor = pg.get(x, y);
-
-  //       // Check if the pixel color is pink
-  //       if (
-  //         pixelColor[0] === 255 && // Red
-  //         pixelColor[1] === 78 && // Green
-  //         pixelColor[2] === 202 // Blue
-  //       ) {
-  //         pinkCount++;
-  //       }
-  //     }
-  //   }
-
-  //   // Calculate the percentage of pink pixels
-  //   let totalPixels = (width * height * 9) / 16;
-  //   pinkPercentage = (pinkCount / totalPixels) * 100;
-  //   return pinkPercentage;
-  // }
-
   switch (phase) {
     case "intro":
       break;
@@ -247,15 +134,15 @@ function draw() {
     case "tutorial":
       break;
     case "main_game":
-      drawMainGameScreen(); // 게임 화면 그리기
-      // 프로토타입은 여기서만 코드 작성해주세요~
-
+      image(backgroundImage, 0, 0, width, height);
       image(pg, 0, 0);
-      ui.drawMainGameScreen();
+
+      ui.drawMainGameScreen(system.inkAreaRatio);
 
       player1.display();
       player2.display();
 
+      // 죽지 않았을때만 움직이고 공격가능.
       if (!player1.isDead) {
         player1.move();
         player1.attack();
@@ -269,13 +156,10 @@ function draw() {
       //minimi 보이기
       player2.minimiDisplay();
 
+      // 미니미와 공격자 충돌 계산.
       for (let i = 0; i < player2.minimiArray.length; i++) {
         let minimi = player2.minimiArray[i];
 
-        // push();
-        // fill(255, 0, 0);
-        // ellipse(minimi.x, minimi.y, minimi.width, minimi.width);
-        // pop();
         if (
           player1.isCollidedWithCircle({
             coordX: minimi.x,
@@ -290,7 +174,7 @@ function draw() {
         }
       }
 
-      //minimi, bullet 충돌
+      //minimi와 bullet의 충돌 계산.
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();
 
@@ -311,6 +195,7 @@ function draw() {
         }
       }
 
+      // 플레이어1과 플레이어2의 충돌 계산.
       player1.isCollidedWithPlayer({
         x: player2.x,
         y: player2.y,
@@ -318,6 +203,8 @@ function draw() {
           Math.pow(player2.width / 2, 2) + Math.pow(player2.height / 2, 2)
         ),
       });
+
+      // 플레이어2와 플레이어1의 충돌 계산.
       player2.isCollidedWithPlayer({
         x: player1.x,
         y: player1.y,
@@ -330,6 +217,19 @@ function draw() {
     case "game_result":
       break;
   }
+
+  if (millis() - lastUpdateTime > 10000) {
+    // pinkPercentage = calculatePinkPercentage();
+    lastUpdateTime = millis();
+  }
+
+  textAlign(CENTER, CENTER);
+  textSize(40);
+  textStyle(BOLD);
+  fill(80, 165, 215);
+  text(nf(pinkPercentage, 2, 1), width / 18, height / 3.2);
+  fill(115, 20, 150);
+  text(100 - nf(pinkPercentage, 2, 1), (16.93 * width) / 18, height / 3.2);
 
   // Control the visibility of the item image
   if (secondImageTimer > 0) {
