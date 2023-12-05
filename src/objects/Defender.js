@@ -4,6 +4,10 @@ class Defender extends Player {
     this.pg = args.pg;
     this.circles = [];
     this.minimiArray = [];
+    this.minimiPosition = this.width;
+    this.minimiSize = this.width / 3;
+    this.minimiX = [];
+    this.minimiY = [];
 
     this.defenseSpeed = 5; // 수비 속도 초기값
     this.defenseFastItemKey = 191;
@@ -56,6 +60,11 @@ class Defender extends Player {
     }
   }
 
+  respawn() {
+    super.respawn();
+    this.minimiInitialize();
+  }
+
   //minimi  10개 생성
   minimiInitialize() {
     let numCircles = 10;
@@ -68,9 +77,9 @@ class Defender extends Player {
 
   //minimi 공전
   minimiDisplay() {
-    push();
     stroke(0);
-    fill(255);
+    fill(0);
+
     this.minimiArray = [];
 
     for (let i = 0; i < this.circles.length; i++) {
@@ -78,30 +87,12 @@ class Defender extends Player {
       translate(this.x, this.y);
       let rotation = millis() * 0.001;
       let circleAngle = this.circles[i] + rotation;
-      rotate(circleAngle);
-      ellipse(
-        (this.width * 2) / 3,
-        (this.height * 2) / 3,
-        this.width / 3,
-        this.height / 3
-      );
-      this.minimiArray.push({
-        x: this.x + ((this.width * 2) / 3) * cos(this.circles[i]),
-        y: this.y + ((this.height * 2) / 3) * sin(this.circles[i]),
-        width: this.width / 3,
-      });
+      this.minimiX[i] = this.minimiPosition * cos(circleAngle);
+      this.minimiY[i] = this.minimiPosition * sin(circleAngle);
+      this.minimiArray.push(this.minimiX[i], this.minimiY[i]);
+      circle(this.minimiX[i], this.minimiY[i], this.minimiSize);
       pop();
-      // push();
-      // fill(255, 0, 0);
-      // ellipse(
-      //   this.x + ((this.width * 2) / 3) * cos(this.circles[i]),
-      //   this.y + ((this.height * 2) / 3) * sin(this.circles[i]),
-      //   this.width / 3,
-      //   this.height / 3
-      // );
-      // pop();
     }
-    pop();
   }
 
   //minimi와 bullet 충돌시 둘 다 사라짐
@@ -112,11 +103,11 @@ class Defender extends Player {
       let d = dist(
         bullet.coordX,
         bullet.coordY,
-        this.x + ((this.width * 2) / 3) * cos(this.circles[i]),
-        this.y + ((this.height * 2) / 3) * sin(this.circles[i])
+        this.x + this.minimiX[i],
+        this.y + this.minimiY[i]
       );
 
-      if (d < this.width / 3 / 2 + bullet.width / 2) {
+      if (d < this.minimiSize / 2 + bullet.width / 2) {
         circlesToRemove.push(i);
         bullet.coordX = 9999;
         bullet.coordY = 9999;

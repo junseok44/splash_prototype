@@ -11,14 +11,15 @@ class UI {
 
     this.UIHeight = (this.canvasHeight / 100) * 20;
     this.horizontalGridOffset = (this.canvasWidth / 100) * 11;
-    this.verticalGridOffset = (width / 100) * 3;
+    this.verticalGridOffset = (this.canvasHeight / 100) * 3;
+    this.playerLifeUIOffset = (this.canvasWidth / 100) * 14;
+    this.playerLifeUIheight = (this.canvasHeight / 100) * 13;
+
+    this.inkRatioUIOffset = (this.canvasWidth / 100) * 20;
+    this.inkRatioUIheight = (this.canvasHeight / 100) * 6;
   }
 
   // 화면 양 옆의 여백
-  static playerLifeUIOffset = 200;
-  static playerLifeUIheight = 100;
-  static inkRatioUIOffset = 250;
-  static inkRatioUIheight = 60;
 
   // TODO 임시로 설정.
 
@@ -44,33 +45,36 @@ class UI {
     text("플레이어1 이동: wasd 회전 qe 잉크총 발사 r", 10, 20);
     text("플레이어2 이동: 방향키 회전 < > 바닥 청소 /", 10, 40);
 
+    push();
     textSize(20);
-
     text(
       `Attacker: ${inkAreaRatio.toFixed(0)}%`,
-      UI.inkRatioUIOffset,
-      UI.inkRatioUIheight
+      this.inkRatioUIOffset,
+      this.inkRatioUIheight
     );
 
     text(
       `Defender:${100 - inkAreaRatio.toFixed(0)}%`,
-      width - UI.inkRatioUIOffset,
-      UI.inkRatioUIheight
+      this.canvasWidth - this.inkRatioUIOffset,
+      this.inkRatioUIheight
     );
+
+    pop();
 
     // attacker 죽었을때 부활까지 남은 시간 표시
     if (this.player1.isDead) {
       push();
-      textSize(20);
+      textSize(25);
       textAlign(LEFT);
+      fill(255);
       if (this.player1DeadTime === 0) {
         this.player1DeadTime = millis();
       }
       text(
         UI.playerRespawnComment +
           this.calculateRespawnLeftTime(this.player1DeadTime),
-        UI.playerLifeUIOffset,
-        UI.playerLifeUIheight
+        this.playerLifeUIOffset,
+        this.playerLifeUIheight
       );
       pop();
     } else {
@@ -84,12 +88,15 @@ class UI {
         this.player2DeadTime = millis();
       }
       push();
-      textSize(20);
+      textSize(25);
+      fill(255);
+
       textAlign(RIGHT);
       text(
-        UI.Comment + this.calculateRespawnLeftTime(this.player2DeadTime),
-        width - UI.playerLifeUIOffset,
-        UI.playerLifeUIheight
+        UI.playerRespawnComment +
+          this.calculateRespawnLeftTime(this.player2DeadTime),
+        width - this.playerLifeUIOffset,
+        this.playerLifeUIheight
       );
       pop();
     } else {
@@ -99,9 +106,14 @@ class UI {
     // attacker, defender의 체력 UI 표시 (몇개 남았는지)
     for (let i = 0; i < this.player1.life; i++) {
       push();
-      fill(255, 0, 0);
       noStroke();
-      ellipse(i * 50 + UI.playerLifeUIOffset, UI.playerLifeUIheight, 30, 30);
+      fill(255, 0, 0);
+      ellipse(
+        i * 50 + this.playerLifeUIOffset,
+        this.playerLifeUIheight,
+        30,
+        30
+      );
       pop();
     }
 
@@ -110,8 +122,8 @@ class UI {
       fill(255, 0, 0);
       noStroke();
       ellipse(
-        width - i * 50 - UI.playerLifeUIOffset,
-        UI.playerLifeUIheight,
+        this.canvasWidth - i * 50 - this.playerLifeUIOffset,
+        this.playerLifeUIheight,
         30,
         30
       );

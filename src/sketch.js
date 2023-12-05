@@ -80,9 +80,10 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  rectMode(CENTER);
+
   pg = createGraphics(windowWidth, windowHeight);
   pg.noStroke();
+
   system = new System({ pg });
   player1 = new Attacker({
     x: windowWidth / 2 - 100,
@@ -118,11 +119,13 @@ function setup() {
   ink = new InkPattern(100);
   ui = new UI({ player1, player2, width, height });
 
+  rectMode(CENTER);
+
   player2.minimiInitialize();
 
   setInterval(() => {
     system.calculateInkAreaRatio();
-  }, 10000);
+  }, 5000);
 }
 
 function draw() {
@@ -157,14 +160,12 @@ function draw() {
       player2.minimiDisplay();
 
       // 미니미와 공격자 충돌 계산.
-      for (let i = 0; i < player2.minimiArray.length; i++) {
-        let minimi = player2.minimiArray[i];
-
+      for (let i = 0; i < player2.minimiX.length; i++) {
         if (
           player1.isCollidedWithCircle({
-            coordX: minimi.x,
-            coordY: minimi.y,
-            width: minimi.width,
+            coordX: player2.x + player2.minimiX[i],
+            coordY: player2.y + player2.minimiY[i],
+            width: player2.minimiSize,
           })
         ) {
           player1.hit();
@@ -269,7 +270,7 @@ function draw() {
       image(finalImage1, 0, 0, width, height);
     }
   } else {
-    showSecondImage = frameCount % 300 === 0;
+    showSecondImage = frameCount % 1200 === 0;
     if (showSecondImage) {
       secondImageTimer = 120;
       foregroundVisible = true; // Show foregroundImage
