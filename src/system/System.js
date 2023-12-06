@@ -2,7 +2,20 @@ class System {
   constructor({ pg }) {
     this.pg = pg;
     this.inkAreaRatio = 0;
+    this.isItemActivated = false;
+    this.phase = System.PHASE.MAIN_GAME;
+    this.countdown = 120;
   }
+
+  static PHASE = {
+    INTRO: "intro",
+    SELECT_CHARACTER: "select_character",
+    TUTORIAL: "tutorial",
+    MAIN_GAME: "main_game",
+    GAME_RESULT: "game_result",
+  };
+
+  static frameRate = 60;
 
   static isColorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold) {
     return (
@@ -11,6 +24,14 @@ class System {
       Math.abs(b1 - b2) <= threshold &&
       Math.abs(a1 - a2) <= threshold
     );
+  }
+
+  get isEndGame() {
+    return this.countdown <= 0;
+  }
+
+  timeLapse() {
+    this.countdown--;
   }
 
   calculateInkAreaRatio() {

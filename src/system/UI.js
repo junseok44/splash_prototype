@@ -17,6 +17,9 @@ class UI {
 
     this.inkRatioUIOffset = (this.canvasWidth / 100) * 20;
     this.inkRatioUIheight = (this.canvasHeight / 100) * 6;
+
+    this.itemUIOffset = (this.canvasWidth / 100) * 40;
+    this.itemUIheight = (this.canvasHeight / 100) * 17;
   }
 
   // 화면 양 옆의 여백
@@ -61,6 +64,36 @@ class UI {
 
     pop();
 
+    push();
+    // display the percentage of pink pixels
+    textAlign(CENTER, CENTER);
+    textSize(40);
+    textStyle(BOLD);
+    fill(80, 165, 215);
+    text(
+      nf(inkAreaRatio, 2, 1),
+      this.canvasWidth / 18,
+      this.canvasHeight / 3.2
+    );
+    fill(115, 20, 150);
+    text(
+      100 - nf(inkAreaRatio, 2, 1),
+      (16.93 * this.canvasWidth) / 18,
+      this.canvasHeight / 3.2
+    );
+
+    pop();
+
+    push();
+    fill(255);
+    rect(this.itemUIOffset, this.itemUIheight, 100, 100);
+    rect(this.canvasWidth - this.itemUIOffset, this.itemUIheight, 100, 100);
+    fill(0);
+    noStroke();
+    text("Item slot", this.itemUIOffset, this.itemUIheight);
+    text("Item slot", this.canvasWidth - this.itemUIOffset, this.itemUIheight);
+
+    pop();
     // attacker 죽었을때 부활까지 남은 시간 표시
     if (this.player1.isDead) {
       push();
@@ -131,5 +164,16 @@ class UI {
     }
   }
 
-  drawGameResultScreen() {}
+  drawGameItemImage(itemImage) {
+    let x = width / 2 - itemImage.width / 4;
+    let y = height / 2 - itemImage.height / 4;
+    let smallerWidth = itemImage.width / 2;
+    let smallerHeight = itemImage.height / 2;
+
+    image(itemImage, x, y, smallerWidth, smallerHeight);
+  }
+
+  drawGameResultScreen(winnerImage) {
+    image(winnerImage, 0, 0, this.canvasWidth, this.canvasHeight);
+  }
 }
