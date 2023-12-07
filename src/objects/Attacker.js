@@ -4,12 +4,10 @@ class Attacker extends Player {
     this.deg = PI / 2;
   }
 
-  changeControlsForDefenseWithReverse() {
-    this.changeControls(68, 65, 83, 87, 81, 69, 82);
-  }
+  static attackInterval = 200;
 
-  changeControlsForDefenseWithFreeze() {
-    this.changeControls(110, 111, 112, 113, 114, 115, 116);
+  rangeUp(value) {
+    // Attacker.attackInterval -= value;
   }
 
   attack() {
@@ -25,31 +23,10 @@ class Attacker extends Player {
         this.isAttacked = true;
         setTimeout(() => {
           this.isAttacked = false;
-        }, 100);
+        }, Attacker.attackInterval);
       }
 
       pop();
     }
   }
-
-  // move() {
-  //   if (keyIsDown(this.lcode)) {
-  //     this.x -= 5;
-  //   }
-  //   if (keyIsDown(this.rcode)) {
-  //     this.x += 5;
-  //   }
-  //   if (keyIsDown(this.ucode)) {
-  //     this.y -= 5;
-  //   }
-  //   if (keyIsDown(this.dcode)) {
-  //     this.y += 5;
-  //   }
-  //   if (keyIsDown(this.rotate_lcode)) {
-  //     this.deg -= 0.1;
-  //   }
-  //   if (keyIsDown(this.rotate_rcode)) {
-  //     this.deg += 0.1;
-  //   }
-  // }
 }

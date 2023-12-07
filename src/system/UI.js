@@ -12,21 +12,23 @@ class UI {
     this.UIHeight = (this.canvasHeight / 100) * 20;
     this.horizontalGridOffset = (this.canvasWidth / 100) * 11;
     this.verticalGridOffset = (this.canvasHeight / 100) * 3;
+
     this.playerLifeUIOffset = (this.canvasWidth / 100) * 14;
     this.playerLifeUIheight = (this.canvasHeight / 100) * 13;
 
     this.inkRatioUIOffset = (this.canvasWidth / 100) * 20;
     this.inkRatioUIheight = (this.canvasHeight / 100) * 6;
 
+    this.itemTooltipUiOffset = (this.canvasWidth / 100) * 22;
+    this.itemTooltipUiHeight = (this.canvasHeight / 100) * 19;
+
     this.itemUIOffset = (this.canvasWidth / 100) * 40;
     this.itemUIheight = (this.canvasHeight / 100) * 17;
   }
 
-  // 화면 양 옆의 여백
-
-  // TODO 임시로 설정.
-
   static playerRespawnComment = `부활까지 남은 시간:`;
+  static itemTooltipUiRectWidth = 270;
+  static itemTooltipUiRectHeight = 40;
 
   calculateRespawnLeftTime(deadTime) {
     return Math.floor(
@@ -43,10 +45,15 @@ class UI {
 
   drawTutorialScreen() {}
 
-  drawMainGameScreen(inkAreaRatio) {
-    textSize(15);
-    text("플레이어1 이동: wasd 회전 qe 잉크총 발사 r", 10, 20);
-    text("플레이어2 이동: 방향키 회전 < > 바닥 청소 /", 10, 40);
+  drawMainGameScreen(inkAreaRatio, countdown) {
+    textAlign(CENTER, CENTER);
+    push();
+
+    textSize(80);
+    fill(0);
+    text(countdown, this.canvasWidth / 2, this.canvasHeight / 5.4);
+
+    pop();
 
     push();
     textSize(20);
@@ -84,6 +91,7 @@ class UI {
 
     pop();
 
+    // item slot
     push();
     fill(255);
     rect(this.itemUIOffset, this.itemUIheight, 100, 100);
@@ -94,6 +102,23 @@ class UI {
     text("Item slot", this.canvasWidth - this.itemUIOffset, this.itemUIheight);
 
     pop();
+
+    push();
+    rectMode(LEFT);
+    rect(
+      this.itemTooltipUiOffset,
+      this.itemTooltipUiHeight,
+      UI.itemTooltipUiRectWidth,
+      UI.itemTooltipUiRectHeight
+    );
+    rect(
+      this.canvasWidth - this.itemTooltipUiOffset,
+      this.itemTooltipUiHeight,
+      UI.itemTooltipUiRectWidth,
+      UI.itemTooltipUiRectHeight
+    );
+    pop();
+
     // attacker 죽었을때 부활까지 남은 시간 표시
     if (this.player1.isDead) {
       push();
@@ -171,6 +196,32 @@ class UI {
     let smallerHeight = itemImage.height / 2;
 
     image(itemImage, x, y, smallerWidth, smallerHeight);
+  }
+
+  drawItemSlotImage(itemImage, isAttacker) {
+    let x = isAttacker
+      ? this.itemUIOffset
+      : this.canvasWidth - this.itemUIOffset;
+    let y = this.itemUIheight;
+
+    push();
+    imageMode(CENTER);
+    image(itemImage, x, y, 100, 100);
+    pop();
+  }
+
+  drawItemToolTip(itemType, isAttacker) {
+    push();
+    textAlign(CENTER, CENTER);
+    textSize(18);
+    fill(255);
+
+    let textX = isAttacker
+      ? this.itemTooltipUiOffset
+      : this.canvasWidth - this.itemTooltipUiOffset;
+    let textY = this.itemTooltipUiHeight;
+    text(`${itemType}획득!!`, textX, textY);
+    pop();
   }
 
   drawGameResultScreen(winnerImage) {

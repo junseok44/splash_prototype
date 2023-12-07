@@ -2,7 +2,6 @@ class System {
   constructor({ pg }) {
     this.pg = pg;
     this.inkAreaRatio = 0;
-    this.isItemActivated = false;
     this.phase = System.PHASE.MAIN_GAME;
     this.countdown = 120;
   }
@@ -14,7 +13,6 @@ class System {
     MAIN_GAME: "main_game",
     GAME_RESULT: "game_result",
   };
-
   static frameRate = 60;
 
   static isColorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold) {

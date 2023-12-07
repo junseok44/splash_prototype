@@ -33,10 +33,14 @@ class Player {
     this.isAttacked = false;
     this.isHit = false;
 
+    this.isReversed = false;
+
     this.life = Player.playerLife;
     this.isDead = false;
 
     this.collisionSide = null;
+
+    this.moveSpeed = 5;
   }
 
   static coolTimeAfterHit = 500;
@@ -56,6 +60,15 @@ class Player {
   // 추상메서드. 자식 클래스에서 반드시 구현해야 함.
   attack() {
     throw Error("this method must be implemented");
+  }
+
+  // rangeUp() {
+  //   throw Error("this method must be implemented");
+  // }
+
+  reverse() {
+    console.log("reverse");
+    this.reversed = !this.reversed;
   }
 
   // 플레이어는 사각형이고 충돌체는 원이라고 가정하고 충돌 판정을 하는 함수.
@@ -124,45 +137,72 @@ class Player {
   }
 
   move() {
-    let diagonal = (this.width / 2) * Math.sqrt(2);
+    if (this.isReversed) {
+      if (keyIsDown(this.lcode)) this.moveTo("right");
+      if (keyIsDown(this.rcode)) this.moveTo("left");
+      if (keyIsDown(this.ucode)) this.moveTo("down");
+      if (keyIsDown(this.dcode)) this.moveTo("up");
 
-    if (keyIsDown(this.lcode)) {
-      if (
-        this.x <= diagonal + ui.horizontalGridOffset ||
-        this.collisionSide == "left"
-      )
-        return;
-      this.x -= 5;
+      return;
     }
-    if (keyIsDown(this.rcode)) {
-      if (
-        this.x >= width - diagonal - ui.horizontalGridOffset ||
-        this.collisionSide == "right"
-      )
-        return;
-      this.x += 5;
-    }
-    if (keyIsDown(this.ucode)) {
-      if (
-        this.y <= diagonal + ui.UIHeight + ui.verticalGridOffset ||
-        this.collisionSide == "top"
-      )
-        return;
-      this.y -= 5;
-    }
-    if (keyIsDown(this.dcode)) {
-      if (
-        this.y >= height - diagonal - ui.verticalGridOffset ||
-        this.collisionSide == "bottom"
-      )
-        return;
-      this.y += 5;
-    }
+
+    if (keyIsDown(this.lcode)) this.moveTo("left");
+    if (keyIsDown(this.rcode)) this.moveTo("right");
+    if (keyIsDown(this.ucode)) this.moveTo("up");
+    if (keyIsDown(this.dcode)) this.moveTo("down");
+
     if (keyIsDown(this.rotate_lcode)) {
       this.deg -= 0.1;
     }
     if (keyIsDown(this.rotate_rcode)) {
       this.deg += 0.1;
+    }
+  }
+
+  changeMoveSpeed(speed) {
+    this.moveSpeed = speed;
+  }
+
+  moveTo(direction) {
+    let diagonal = (this.width / 2) * Math.sqrt(2);
+
+    switch (direction) {
+      case "left":
+        if (
+          this.x <= diagonal + ui.horizontalGridOffset ||
+          this.collisionSide == "left"
+        ) {
+          console.log("lets return");
+          return;
+        }
+        this.x -= this.moveSpeed;
+        break;
+      case "right":
+        if (
+          this.x >= width - diagonal - ui.horizontalGridOffset ||
+          this.collisionSide == "right"
+        )
+          return;
+        this.x += this.moveSpeed;
+        break;
+      case "up":
+        if (
+          this.y <= diagonal + ui.UIHeight + ui.verticalGridOffset ||
+          this.collisionSide == "top"
+        )
+          return;
+        this.y -= this.moveSpeed;
+        break;
+      case "down":
+        if (
+          this.y >= height - diagonal - ui.verticalGridOffset ||
+          this.collisionSide == "bottom"
+        )
+          return;
+        this.y += this.moveSpeed;
+        break;
+      default:
+        break;
     }
   }
 
@@ -185,6 +225,7 @@ class Player {
     }, Player.respawnTime);
   }
 
+  // 부활
   respawn() {
     this.isDead = false;
     this.life = Player.playerLife;
@@ -220,17 +261,6 @@ class Player {
 
     fill(0);
     pop();
-  }
-
-  //REVISED
-  changeControls(l, r, u, d, rotate_l, rotate_r, attack) {
-    this.lcode = l;
-    this.rcode = r;
-    this.ucode = u;
-    this.dcode = d;
-    this.rotate_lcode = rotate_l;
-    this.rotate_rcode = rotate_r;
-    this.attackcode = attack;
   }
 }
 
