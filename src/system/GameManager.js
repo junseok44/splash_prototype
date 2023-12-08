@@ -3,6 +3,9 @@ class GameManager {
   // 카운트다운.
   // 잉크 비율도 여기서 관리하도록.
   // 본 게임에서 게임 스타트 이런것도 해야하니까.
+
+  // FIXME: 만약 두번째 아이템이 적용중인데, 랜덤 아이템이 나오면? 지금 안
+
   constructor() {
     this._currentItemType = null;
     this._currentItemImage = null;
@@ -25,9 +28,12 @@ class GameManager {
       player1,
       player2,
     });
-    // this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
+    this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
+
     // 테스트용.
-    this.setCurrentItemTypeAndImage(ItemManager.itemTypes.RANGE_UP, imageLib);
+    // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.RANGE_UP, imageLib);
+    // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.SPEED_UP, imageLib);
+    // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.REVERSE, imageLib);
 
     this.isDisplayRandomItemImage = false;
 

@@ -3,7 +3,9 @@ class ItemManager {
     this.isItemActivated = false;
   }
 
-  static itemEffectTime = 1500;
+  static itemEffectTime = 3000;
+  static defenderRangeUpValue = 50;
+  static attackerRangeUpValue = 100;
 
   static itemTypes = {
     SPEED_UP: "speed_up",
@@ -66,14 +68,15 @@ class ItemManager {
 
   applyRangeUpEffect(itemEater) {
     if (itemEater instanceof Defender) {
-      itemEater.rangeUp(50);
+      itemEater.rangeUp(ItemManager.defenderRangeUpValue);
       setTimeout(() => {
-        itemEater.rangeUp(-50);
+        itemEater.rangeUp(-ItemManager.defenderRangeUpValue);
       }, ItemManager.itemEffectTime);
     } else {
-      itemEater.rangeUp();
+      ink.changeInkPatternSize(ItemManager.attackerRangeUpValue);
+      setTimeout(() => {
+        ink.changeInkPatternSize(InkPattern.originalInkMaxSize);
+      }, ItemManager.itemEffectTime);
     }
-
-    // itemEater.rangeUp();
   }
 }

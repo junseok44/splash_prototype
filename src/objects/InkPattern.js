@@ -1,13 +1,13 @@
 class InkPattern {
-  static makeInkPattern(patternSize) {
+  static makeInkPattern(patternSize, maxSize = InkPattern.originalInkMaxSize) {
     var result = [];
     for (var n = 0; n < patternSize; n++) {
       var list = [];
       for (var i = 0; i <= 400; i += 20) {
         list.push(
           createVector(
-            random(10, 40) * cos(radians(i)),
-            random(10, 40) * sin(radians(i))
+            random(10, maxSize) * cos(radians(i)),
+            random(10, maxSize) * sin(radians(i))
           )
         );
       }
