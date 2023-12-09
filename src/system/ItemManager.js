@@ -44,6 +44,13 @@ class ItemManager {
     }
   }
 
+  static setPlayerItemType(player, itemType) {
+    player.itemType = itemType;
+    setTimeout(() => {
+      player.itemType = null;
+    }, ItemManager.itemEffectTime);
+  }
+
   applySpeedEffect(itemEater) {
     if (itemEater instanceof Attacker) {
       Attacker.attackInterval = 100;
@@ -57,13 +64,19 @@ class ItemManager {
         itemEater.changeMoveSpeed(originalMoveSpeed);
       }, ItemManager.itemEffectTime);
     }
+
+    ItemManager.setPlayerItemType(itemEater, ItemManager.itemTypes.SPEED_UP);
   }
 
   applyReverseEffect(itemEater) {
     itemEater.isReversed = true;
+    itemEater.itemType = ItemManager.itemTypes.REVERSE;
     setTimeout(() => {
       itemEater.isReversed = false;
+      itemEater.itemType = null;
     }, ItemManager.itemEffectTime);
+
+    ItemManager.setPlayerItemType(itemEater, ItemManager.itemTypes.REVERSE);
   }
 
   applyRangeUpEffect(itemEater) {
@@ -78,5 +91,7 @@ class ItemManager {
         ink.changeInkPatternSize(InkPattern.originalInkMaxSize);
       }, ItemManager.itemEffectTime);
     }
+
+    ItemManager.setPlayerItemType(itemEater, ItemManager.itemTypes.RANGE_UP);
   }
 }

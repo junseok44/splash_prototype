@@ -39,7 +39,7 @@ class Player {
     this.isDead = false;
 
     this.collisionSide = null;
-
+    this.itemType = null;
     this.moveSpeed = 5;
   }
 
@@ -231,6 +231,47 @@ class Player {
     this.life = Player.playerLife;
   }
 
+  drawSpiral() {
+    let angle = 0;
+    let radius = 0;
+    let maxRadius = min(this.width, this.height) / 2;
+    let angleOffset = 0.2;
+    let radiusOffset = 0.15;
+
+    stroke(128, 0, 128);
+    strokeWeight(2);
+
+    let prevX = 0;
+    let prevY = 0;
+
+    while (radius < maxRadius) {
+      let newX = cos(angle) * radius;
+      let newY = sin(angle) * radius;
+      line(prevX, prevY, newX, newY);
+
+      prevX = newX;
+      prevY = newY;
+
+      angle += angleOffset;
+      radius += radiusOffset;
+    }
+  }
+
+  drawStar(x, y, radius1, radius2, npoints) {
+    let angle = TWO_PI / npoints;
+    let halfAngle = angle / 2;
+    beginShape();
+    for (let a = PI / 2; a < TWO_PI + PI / 2; a += angle) {
+      let sx = x + cos(a) * radius2;
+      let sy = y + sin(a) * radius2;
+      vertex(sx, sy);
+      sx = x + cos(a + halfAngle) * radius1;
+      sy = y + sin(a + halfAngle) * radius1;
+      vertex(sx, sy);
+    }
+    endShape(CLOSE);
+  }
+
   display() {
     push();
 
@@ -264,98 +305,65 @@ class Player {
 
     //1. 가속디자인: 공격이랑 수비 모두 똑같은 디자인으로 적용이 되어서 player에 넣었습니다. 아이템 시스템에서 옮기면 될 것 같아요!
 
-    //push();
-    //stroke(0, 0, 255);
-    //strokeWeight(5);
-    //fill(255, 255, 0);
+    switch (this.itemType) {
+      case ItemManager.itemTypes.SPEED_UP:
+        push();
+        stroke(0, 0, 255);
+        strokeWeight(5);
+        fill(255, 255, 0);
+        translate(this.x, this.y);
+        rotate(this.deg);
+        rect(0, 0, this.width, this.height);
+        noStroke();
+        fill(255, 0, 0);
+        textStyle(BOLD);
+        textSize(50);
+        text("S", this.width - 65, this.height - 30);
+        pop();
+        break;
+      case ItemManager.itemTypes.RANGE_UP:
+        push();
+        fill(0, 8, 117);
 
-    //translate(this.x, this.y);
-    //rotate(this.deg);
+        translate(this.x, this.y);
+        rotate(this.deg);
 
-    //rect(0, 0, this.width, this.height);
+        rect(0, 0, this.width, this.height);
 
-    //noStroke();
-    //fill(255, 0, 0);
-    //textStyle(BOLD);
-    //textSize(50);
-    //text('S', this.width-65, this.height-30)
-    //pop();
+        fill(255, 255, 0);
+        noStroke();
+        this.drawStar(this.width - 50, this.height - 47, this.starSize, 30, 15);
+
+        fill(255);
+        stroke(0);
+        ellipse(0, -20, 10, 10);
+        pop();
+        break;
+      case ItemManager.itemTypes.REVERSE:
+        push();
+        fill(190, 254, 243);
+        translate(this.x, this.y);
+        rotate(this.deg);
+
+        rect(0, 0, this.width, this.height);
+
+        this.drawSpiral();
+
+        fill(255);
+        stroke(0);
+        ellipse(0, -20, 10, 10);
+        pop();
+
+        break;
+    }
+
     ///////////////////////////////////////
 
     //2. 대마왕 디자인
-    // push();
-    // fill(190, 254, 243)
-    // translate(this.x, this.y);
-    // rotate(this.deg);
-
-    // rect(0, 0, this.width, this.height);
-
-    // this.drawSpiral();
-
-    // fill(255);
-    // stroke(0);
-    //  ellipse(0, -20, 10, 10);
-    //  pop();
-    // }
-    //  drawSpiral() {
-    //   let angle = 0;
-    //  let radius = 0;
-    // let maxRadius = min(this.width, this.height) / 2;
-    //  let angleOffset = 0.2;
-    //  let radiusOffset = 0.15;
-
-    //  stroke(128, 0, 128);
-    //  strokeWeight(2);
-
-    //  let prevX = 0;
-    //  let prevY = 0;
-
-    //  while(radius < maxRadius) {
-    //    let newX = cos(angle) * radius;
-    //    let newY = sin(angle) * radius;
-    //    line(prevX, prevY, newX, newY);
-
-    //    prevX = newX;
-    //    prevY = newY;
-
-    //    angle += angleOffset;
-    //    radius += radiusOffset;
-    // }
-    // }
 
     //////////////////////////////////
 
     // 3. 범위 아이템 디자인
-    // push();
-    //fill(0, 8, 117);
-
-    //translate(this.x, this.y);
-    //rotate(this.deg);
-
-    // rect(0, 0, this.width, this.height);
-
-    //  fill(255, 255, 0);
-    // noStroke();
-    // drawStar(this.width-50, this.height-47, this.starSize, 30, 15);
-
-    // function drawStar(x, y, radius1, radius2, npoints) {
-    // let angle = TWO_PI / npoints;
-    // let halfAngle = angle / 2;
-    // beginShape();
-    // for (let a = PI / 2; a < TWO_PI + PI / 2; a += angle) {
-    // let sx = x+cos(a) * radius2;
-    // let sy = y+sin(a) * radius2;
-    // vertex(sx, sy);
-    // sx = x+cos(a + halfAngle) * radius1;
-    //  sy = y+ sin(a + halfAngle) * radius1;
-    //  vertex(sx, sy);
-    // }
-    // endShape(CLOSE);
-    // }
-    // fill(255);
-    // stroke(0);
-    // ellipse(0, -20, 10, 10);
-    // pop();
   }
 }
 
