@@ -36,7 +36,7 @@ class InkPattern {
     var idx = parseInt(random(0, this.patternSize - 1));
     pg.push();
     pg.beginShape();
-    pg.translate(x, y);
+    pg.translate(x - (windowWidth * 11) / 100, y - (windowHeight * 23) / 100);
     pg.rotate(deg);
     pg.fill(color);
     for (var i = 0; i < this.ink[idx].length; i++) {
