@@ -21,7 +21,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  pg = createGraphics(windowWidth, windowHeight);
+  pg = createGraphics((windowWidth * 78) / 100, (windowHeight * 74) / 100);
   pg.noStroke();
 
   system = new System({ pg });
@@ -78,7 +78,13 @@ function draw() {
       break;
     case System.PHASE.MAIN_GAME:
       image(imageLib.backgroundImage, 0, 0, width, height);
-      image(pg, 0, 0);
+      image(
+        pg,
+        (windowWidth * 11) / 100,
+        (windowHeight * 23) / 100,
+        pg.width,
+        pg.height
+      );
 
       // 게임 끝났을때의 ui
       if (system.isEndGame) {

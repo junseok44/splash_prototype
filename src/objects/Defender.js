@@ -38,7 +38,10 @@ class Defender extends Player {
       // throttling
       pg.push();
       pg.rectMode(pg.CENTER);
-      pg.translate(this.x, this.y);
+      pg.translate(
+        this.x - (windowWidth * 11) / 100,
+        this.y - (windowHeight * 23) / 100
+      );
       pg.rotate(this.deg);
       pg.fill(255);
       //지우개 크기
