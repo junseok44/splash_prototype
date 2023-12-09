@@ -280,12 +280,58 @@ class Player {
     push();
 
     if (this.isDead) {
+      //무덤
       push();
       fill(0);
       translate(this.x, this.y);
-      rotate(this.deg);
-      rect(0, 0, this.width, this.height);
+
+      fill(240, 240, 115);
+      ellipse(0, -this.width * 1.5, this.height * 8, this.width * 0.5);
+      ellipse(0, -this.width * 1.2, this.height * 7, this.width * 0.5);
+      ellipse(0, -this.width * 0.9, this.height * 6, this.width * 0.5);
+      ellipse(0, -this.width * 0.65, this.height * 5, this.width * 0.5);
+
+      fill(185, 245, 245);
+      ellipse(0, -this.width, 200, 200);
+      fill(240, 240, 115);
+      ellipse(0, -this.width * 3, this.width * 4, this.height * 0.9);
+      fill(255);
+      ellipse(0, -this.width * 3, this.width * 3.3, this.height * 0.6);
+
+      fill(220);
+      rectMode(CENTER);
+      rect(0, -this.width * 0.3, this.width * 2, this.width * 1.5);
+
+      ellipse(0, -this.width, this.width * 2, this.width * 1.5);
+
+      push();
+      noStroke();
+      rect(0, -this.width * 0.3, this.width * 1.98, this.width * 1.5);
       pop();
+
+      fill(0);
+      rect(0, 0, this.width, this.height);
+
+      fill(79, 45, 4);
+      ellipse(0, this.width * 0.54, this.height * 2.5, this.width * 0.3);
+
+      for (let i = 0; i <= 80; i += 5) {
+        fill(0, 125, 0);
+        rectMode(CORNERS);
+        rect(
+          i - this.width * 0.84,
+          15 * this.width * 0.02,
+          i + 5 - this.width * 0.84,
+          this.width * 0.5
+        );
+      }
+
+      fill(0, 0, 0, random(100, 255));
+      textSize(30);
+      text("R.I.P.", 0, -this.width * 1.05);
+
+      pop();
+
       return;
     }
 
@@ -296,8 +342,13 @@ class Player {
 
     if (this.isHit) {
       push();
-      fill(255, 0, 0);
-      rect(0, 0, this.width, this.height);
+      fill(random(150, 255), 0, 0, random(150, 255));
+      rect(
+        constrain(random(-10, 10), 0, 10),
+        constrain(random(-10, 10), 0, 10),
+        this.width,
+        this.height
+      ); // when hit
       pop();
     } else {
       rect(0, 0, this.width, this.height);
