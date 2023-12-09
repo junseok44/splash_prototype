@@ -272,6 +272,10 @@ class Player {
     endShape(CLOSE);
   }
 
+  setItemType(itemType) {
+    this.itemType = itemType;
+  }
+
   display() {
     push();
 

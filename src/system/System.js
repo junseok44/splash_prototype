@@ -52,12 +52,7 @@ class System {
     }
     pg.updatePixels();
 
-    // inkAreaRatio를 100이 넘지 않도록 조정
-    inkAreaRatio = min((inkedPixels / totalPixels) * 100, 100);
-
     // inkAreaRatio를 0 미만으로 되지 않도록 조정
-    inkAreaRatio = max(inkAreaRatio, 0);
-
-    this.inkAreaRatio = inkAreaRatio;
+    this.inkAreaRatio = max(min((inkedPixels / totalPixels) * 100, 100), 0);
   }
 }

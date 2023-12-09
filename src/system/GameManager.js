@@ -6,28 +6,50 @@ class GameManager {
 
   // FIXME: 만약 두번째 아이템이 적용중인데, 랜덤 아이템이 나오면? 지금 안
 
-  constructor() {
+  constructor({ player1, player2 }) {
     this._currentItemType = null;
     this._currentItemImage = null;
     this._currentItemEater = null;
 
+    this.player1 = player1;
+    this.player2 = player2;
+
     this.isDisplayRandomItemImage = false;
+    this.itemResetTimer = null;
   }
 
-  static randomItemInterval = 5000;
+  static randomItemDisplayInterval = 10000;
+  static randomItemDisplayDuration = 5000;
+
+  static checkCurrentItemEater(keyCode, { player1, player2 }) {
+    if (keyCode === 84) {
+      return player1;
+    } else if (keyCode === 80) {
+      return player2;
+    }
+  }
 
   showRandomItemImage() {
     this.isDisplayRandomItemImage = true;
     setTimeout(() => {
       this.isDisplayRandomItemImage = false;
-    }, GameManager.randomItemInterval);
+    }, GameManager.randomItemDisplayDuration);
   }
 
-  onItemKeyPressed(keyCode, imageLib, { player1, player2 }) {
-    this.currentItemEater = this.checkCurrentItemEater(keyCode, {
-      player1,
-      player2,
+  setCurrentItemStatus(keyCode, imageLib, itemManager) {
+    this.isDisplayRandomItemImage = false;
+
+    clearInterval(this.itemResetTimer);
+    this.resetItem();
+    if (itemManager.deactivateItemCallback) {
+      itemManager.deactivateItemCallback();
+    }
+
+    this.currentItemEater = GameManager.checkCurrentItemEater(keyCode, {
+      player1: this.player1,
+      player2: this.player2,
     });
+
     this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
 
     // 테스트용.
@@ -35,25 +57,23 @@ class GameManager {
     // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.SPEED_UP, imageLib);
     // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.REVERSE, imageLib);
 
-    this.isDisplayRandomItemImage = false;
+    // keyCode가 다른게 되는 경우가 있어서,
+    this.currentItemEater.setItemType(this.currentItemType);
 
-    setTimeout(() => {
-      this.initializeItem();
+    this.itemResetTimer = setTimeout(() => {
+      if (itemManager.deactivateItemCallback)
+        itemManager.deactivateItemCallback();
+      itemManager.deactivateItemCallback = null;
+      this.resetItem();
     }, ItemManager.itemEffectTime);
   }
 
-  initializeItem() {
+  resetItem() {
     this.currentItemEater = null;
     this.currentItemType = null;
     this.currentItemImage = null;
-  }
-
-  checkCurrentItemEater(keyCode, { player1, player2 }) {
-    if (keyCode === 84) {
-      return player1;
-    } else if (keyCode === 80) {
-      return player2;
-    }
+    this.player1.setItemType(null);
+    this.player2.setItemType(null);
   }
 
   setCurrentItemTypeAndImage(type, imageLib) {

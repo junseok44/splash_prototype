@@ -1,5 +1,5 @@
-let pinkPercentage = 0;
-let inkAreaRatio = 0;
+// let pinkPercentage = 0;
+// let inkAreaRatio = 0;
 
 let player1;
 let player2;
@@ -9,10 +9,8 @@ let itemManager;
 let ui;
 let ink;
 
-let gm = new GameManager();
+let gm;
 let imageLib = new ImageLibrary();
-
-let itemDisplayInterval = 3 * System.frameRate;
 
 function preload() {
   imageLib.loadImages();
@@ -53,19 +51,24 @@ function setup() {
     d: 40,
     rotate_l: 188,
     rotate_r: 190,
-    //attack: 191,
     pg: pg,
   });
-  ui = new UI({ player1, player2, width, height });
   itemManager = new ItemManager();
+  gm = new GameManager({ player1, player2 });
+  ui = new UI({ player1, player2, width, height });
   ink = new InkPattern(100);
 
   rectMode(CENTER);
   player2.minimiInitialize();
 
-  // setInterval(() => {
-  //   system.calculateInkAreaRatio();
-  // }, 5000);
+  setInterval(() => {
+    system.calculateInkAreaRatio();
+  }, 3000);
+
+  // 랜덤 아이템 표시인 ? 를 표시하고, 사라지게 하는 로직
+  setInterval(() => {
+    gm.showRandomItemImage();
+  }, GameManager.randomItemDisplayInterval);
 }
 
 function draw() {
@@ -176,17 +179,12 @@ function draw() {
         ),
       });
 
-      // 랜덤 아이템 표시인 ? 를 표시하고, 사라지게 하는 로직
-      if (frameCount % itemDisplayInterval == 0) {
-        gm.showRandomItemImage();
-      }
-
       // 물음표 아이템 표시하고, 입력을 받음.
       if (gm.isDisplayRandomItemImage) {
         ui.drawGameItemImage(imageLib.randomItemImage);
 
-        if (keyIsDown(84) || keyIsDown(80)) {
-          gm.onItemKeyPressed(keyCode, imageLib, { player1, player2 });
+        if (keyCode === 84 || keyCode === 80) {
+          gm.setCurrentItemStatus(keyCode, imageLib, itemManager);
 
           itemManager.activateItemEffect({
             itemEater: gm.currentItemEater,

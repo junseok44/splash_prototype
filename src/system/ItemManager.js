@@ -1,10 +1,11 @@
 class ItemManager {
   constructor() {
     this.isItemActivated = false;
+    this.deactivateItemCallback = null;
   }
 
   static itemEffectTime = 3000;
-  static defenderRangeUpValue = 50;
+  static defenderRangeUpValue = 100;
   static attackerRangeUpValue = 100;
 
   static itemTypes = {
@@ -22,15 +23,6 @@ class ItemManager {
   }
 
   activateItemEffect({ itemEater, itemType }) {
-    if (this.isItemActivated) return;
-
-    this.isItemActivated = true;
-
-    // 다시 아이템 효과 받을 수 있게 준비해주는 역할.
-    setTimeout(() => {
-      this.isItemActivated = false;
-    }, ItemManager.itemEffectTime);
-
     switch (itemType) {
       case ItemManager.itemTypes.SPEED_UP:
         this.applySpeedEffect(itemEater);
@@ -44,54 +36,54 @@ class ItemManager {
     }
   }
 
-  static setPlayerItemType(player, itemType) {
-    player.itemType = itemType;
-    setTimeout(() => {
-      player.itemType = null;
-    }, ItemManager.itemEffectTime);
-  }
-
   applySpeedEffect(itemEater) {
     if (itemEater instanceof Attacker) {
       Attacker.attackInterval = 100;
-      setTimeout(() => {
+
+      this.deactivateItemCallback = () => {
         Attacker.attackInterval = 200;
-      }, ItemManager.itemEffectTime);
+      };
     } else {
       let originalMoveSpeed = itemEater.moveSpeed;
       itemEater.changeMoveSpeed(10);
-      setTimeout(() => {
-        itemEater.changeMoveSpeed(originalMoveSpeed);
-      }, ItemManager.itemEffectTime);
-    }
 
-    ItemManager.setPlayerItemType(itemEater, ItemManager.itemTypes.SPEED_UP);
+      this.deactivateItemCallback = () => {
+        itemEater.changeMoveSpeed(originalMoveSpeed);
+      };
+    }
   }
 
   applyReverseEffect(itemEater) {
     itemEater.isReversed = true;
     itemEater.itemType = ItemManager.itemTypes.REVERSE;
-    setTimeout(() => {
-      itemEater.isReversed = false;
-      itemEater.itemType = null;
-    }, ItemManager.itemEffectTime);
 
-    ItemManager.setPlayerItemType(itemEater, ItemManager.itemTypes.REVERSE);
+    this.deactivateItemCallback = () => {
+      itemEater.isReversed = false;
+    };
+
+    // setTimeout(() => {
+    //   itemEater.isReversed = false;
+    //   itemEater.itemType = null;
+    // }, ItemManager.itemEffectTime);
   }
 
   applyRangeUpEffect(itemEater) {
     if (itemEater instanceof Defender) {
       itemEater.rangeUp(ItemManager.defenderRangeUpValue);
-      setTimeout(() => {
+
+      this.deactivateItemCallback = () => {
         itemEater.rangeUp(-ItemManager.defenderRangeUpValue);
-      }, ItemManager.itemEffectTime);
+      };
+
+      // setTimeout(() => {
+      //   itemEater.rangeUp(-ItemManager.defenderRangeUpValue);
+      // }, ItemManager.itemEffectTime);
     } else {
       ink.changeInkPatternSize(ItemManager.attackerRangeUpValue);
-      setTimeout(() => {
-        ink.changeInkPatternSize(InkPattern.originalInkMaxSize);
-      }, ItemManager.itemEffectTime);
-    }
 
-    ItemManager.setPlayerItemType(itemEater, ItemManager.itemTypes.RANGE_UP);
+      this.deactivateItemCallback = () => {
+        ink.changeInkPatternSize(InkPattern.originalInkMaxSize);
+      };
+    }
   }
 }
