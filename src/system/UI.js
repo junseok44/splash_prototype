@@ -56,22 +56,6 @@ class UI {
     pop();
 
     push();
-    textSize(20);
-    text(
-      `Attacker: ${inkAreaRatio.toFixed(0)}%`,
-      this.inkRatioUIOffset,
-      this.inkRatioUIheight
-    );
-
-    text(
-      `Defender:${100 - inkAreaRatio.toFixed(0)}%`,
-      this.canvasWidth - this.inkRatioUIOffset,
-      this.inkRatioUIheight
-    );
-
-    pop();
-
-    push();
     // display the percentage of pink pixels
     textAlign(CENTER, CENTER);
     textSize(40);
@@ -126,48 +110,6 @@ class UI {
       UI.itemTooltipUiRectHeight
     );
     pop();
-
-    // attacker 죽었을때 부활까지 남은 시간 표시
-    if (this.player1.isDead) {
-      push();
-      textSize(25);
-      textAlign(LEFT);
-      fill(255);
-      if (this.player1DeadTime === 0) {
-        this.player1DeadTime = millis();
-      }
-      text(
-        UI.playerRespawnComment +
-          this.calculateRespawnLeftTime(this.player1DeadTime),
-        this.playerLifeUIOffset,
-        this.playerLifeUIheight
-      );
-      pop();
-    } else {
-      // 죽은 시간 초기화해줌
-      this.player1DeadTime = 0;
-    }
-
-    // defender 죽었을때 부활까지 남은 시간 표시
-    if (this.player2.isDead) {
-      if (this.player2DeadTime === 0) {
-        this.player2DeadTime = millis();
-      }
-      push();
-      textSize(25);
-      fill(255);
-
-      textAlign(RIGHT);
-      text(
-        UI.playerRespawnComment +
-          this.calculateRespawnLeftTime(this.player2DeadTime),
-        width - this.playerLifeUIOffset,
-        this.playerLifeUIheight
-      );
-      pop();
-    } else {
-      this.player2DeadTime = 0;
-    }
 
     // attacker, defender의 체력 UI 표시 (몇개 남았는지)
     // for (let i = 0; i < this.player1.life; i++) {
@@ -299,6 +241,48 @@ class UI {
         (1.1 * this.playerLifeUIheight) / 5
       );
       pop();
+    }
+
+    // attacker 죽었을때 부활까지 남은 시간 표시
+    if (this.player1.isDead) {
+      push();
+      textSize(25);
+      textAlign(LEFT);
+      fill(255);
+      if (this.player1DeadTime === 0) {
+        this.player1DeadTime = millis();
+      }
+      text(
+        UI.playerRespawnComment +
+          this.calculateRespawnLeftTime(this.player1DeadTime),
+        this.playerLifeUIOffset,
+        this.playerLifeUIheight
+      );
+      pop();
+    } else {
+      // 죽은 시간 초기화해줌
+      this.player1DeadTime = 0;
+    }
+
+    // defender 죽었을때 부활까지 남은 시간 표시
+    if (this.player2.isDead) {
+      if (this.player2DeadTime === 0) {
+        this.player2DeadTime = millis();
+      }
+      push();
+      textSize(25);
+      fill(255);
+
+      textAlign(RIGHT);
+      text(
+        UI.playerRespawnComment +
+          this.calculateRespawnLeftTime(this.player2DeadTime),
+        width - this.playerLifeUIOffset,
+        this.playerLifeUIheight
+      );
+      pop();
+    } else {
+      this.player2DeadTime = 0;
     }
   }
 

@@ -63,7 +63,7 @@ function setup() {
 
   setInterval(() => {
     system.calculateInkAreaRatio();
-  }, 3000);
+  }, 5000);
 
   // 랜덤 아이템 표시인 ? 를 표시하고, 사라지게 하는 로직
   setInterval(() => {

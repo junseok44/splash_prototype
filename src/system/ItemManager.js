@@ -41,7 +41,7 @@ class ItemManager {
   applySpeedEffect(itemEater) {
     if (itemEater instanceof Attacker) {
       let originalAttackInterval = Attacker.attackInterval;
-      Attacker.attackInterval = 100;
+      Attacker.attackInterval = 50;
 
       this.deactivateItemCallback = () => {
         Attacker.attackInterval = originalAttackInterval;

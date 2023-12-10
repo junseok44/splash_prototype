@@ -50,12 +50,12 @@ class GameManager {
       player2: this.player2,
     });
 
-    // this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
+    this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
 
     // 테스트용.
     // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.RANGE_UP, imageLib);
     // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.SPEED_UP, imageLib);
-    this.setCurrentItemTypeAndImage(ItemManager.itemTypes.REVERSE, imageLib);
+    // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.REVERSE, imageLib);
 
     // keyCode가 다른게 되는 경우가 있어서,
 
