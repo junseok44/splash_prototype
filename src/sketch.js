@@ -1,6 +1,3 @@
-// let pinkPercentage = 0;
-// let inkAreaRatio = 0;
-
 let xPosition = 0;
 let yPosition = 0;
 
@@ -292,9 +289,3 @@ function draw() {
 }
 
 // TODO:  -- 키를 눌러 먹으세요!!
-
-// TODO: 아이템 효과 적용 -> 이제 범위 증가만 남음.
-
-// FIXME: 아이템 효과가 끝날때 다 초기화 시켜주는것 - 지금 툴팁이 같이 사라지지가 않아.
-
-// FIXME: 그냥 itemManager에 몰아 넣었으면 되었지 않나? gpt에게 물어볼것.

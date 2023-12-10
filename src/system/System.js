@@ -39,6 +39,9 @@ class System {
     let totalPixels = pg.pixels.length / 4;
     let inkedPixels = 0;
 
+    // 픽셀 띄엄띄엄 확인하기
+    let skipPixels = 10;
+
     for (let i = 0; i < pg.pixels.length; i += 4) {
       let r = pg.pixels[i];
       let g = pg.pixels[i + 1];

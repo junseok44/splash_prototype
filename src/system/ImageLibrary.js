@@ -12,10 +12,8 @@ class ImageLibrary {
 
     this.itemImages = [
       loadImage(ImageLibrary.BASE_DIR + "image10.png"), // 속도
-      loadImage(ImageLibrary.BASE_DIR + "image11.png"), // 빙결
-      loadImage(ImageLibrary.BASE_DIR + "image12.png"), // 범위
-      loadImage(ImageLibrary.BASE_DIR + "image13.png"), // 리버스
-      loadImage(ImageLibrary.BASE_DIR + "image14.png"), // 달팽이
+      loadImage(ImageLibrary.BASE_DIR + "image11.png"), // 범위
+      loadImage(ImageLibrary.BASE_DIR + "image12.png"), // 리버스
     ];
 
     this.resultImages = [
@@ -42,13 +40,13 @@ class ImageLibrary {
       case ItemManager.itemTypes.SPEED_UP:
         return this.itemImages[0];
       case ItemManager.itemTypes.FREEZE:
-        return this.itemImages[1];
+        return null;
       case ItemManager.itemTypes.RANGE_UP:
-        return this.itemImages[2];
+        return this.itemImages[1];
       case ItemManager.itemTypes.REVERSE:
-        return this.itemImages[3];
+        return this.itemImages[2];
       case ItemManager.itemTypes.SNAIL:
-        return this.itemImages[4];
+        return null;
       default:
         return null;
     }
