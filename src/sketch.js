@@ -1,6 +1,9 @@
 // let pinkPercentage = 0;
 // let inkAreaRatio = 0;
 
+let xPosition = 0;
+let yPosition = 0;
+
 let player1;
 let player2;
 let bullets = [];
@@ -204,6 +207,82 @@ function draw() {
 
       if (frameCount % 60 === 0 && system.countdown > 0) {
         system.timeLapse();
+      }
+
+      if (player1.isDead) {
+        push();
+        fill(255, 0, 0, 200);
+        rectMode(CORNERS);
+        rect(
+          0,
+          (9.5 * windowHeight) / 10,
+          (1.15 * windowWidth) / 10,
+          windowHeight
+        );
+        fill(0, 0, 0, 200);
+        rectMode(CORNERS);
+        rect(
+          (1.16 * windowWidth) / 10,
+          (9.5 * windowHeight) / 10,
+          windowWidth,
+          windowWidth
+        );
+        //fill(30,130,130,100);
+        fill(255);
+        textSize((1.4 * windowWidth) / 100);
+        text("Breaking News", windowWidth / 17, (9.8 * windowHeight) / 10);
+        textSize((1.4 * windowWidth) / 100);
+        text(
+          "PLAYER 1: DEAD!",
+          windowWidth / 4 + xPosition,
+          (9.8 * windowHeight) / 10
+        );
+
+        // Update the x position to make the sentence move to the right
+        xPosition += windowWidth / 350;
+
+        // Check if the sentence touches the right side of the canvas}
+        pop();
+      } else {
+        xPosition = 0;
+      }
+
+      if (player2.isDead) {
+        push();
+        fill(255, 0, 0, 200);
+        rectMode(CORNERS);
+        rect(
+          0,
+          (9.5 * windowHeight) / 10,
+          (1.15 * windowWidth) / 10,
+          windowHeight
+        );
+        fill(0, 0, 0, 200);
+        rectMode(CORNERS);
+        rect(
+          (1.16 * windowWidth) / 10,
+          (9.5 * windowHeight) / 10,
+          windowWidth,
+          windowWidth
+        );
+        //fill(30,130,130,100);
+        fill(255);
+        textSize((1.4 * windowWidth) / 100);
+        text("Breaking News", windowWidth / 17, (9.8 * windowHeight) / 10);
+        textSize((1.4 * windowWidth) / 100);
+        text(
+          "PLAYER 2: DEAD!",
+          windowWidth / 4 + yPosition,
+          (9.8 * windowHeight) / 10
+        );
+
+        // Update the x position to make the sentence move to the right
+        yPosition += windowWidth / 350;
+
+        // Check if the sentence touches the right side of the canvas}
+        pop();
+      } else {
+        yPosition = 0;
       }
 
       break;

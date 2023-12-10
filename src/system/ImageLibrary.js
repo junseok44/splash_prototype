@@ -23,7 +23,9 @@ class ImageLibrary {
       loadImage(ImageLibrary.BASE_DIR + "Chess Map Winner 1.png"),
     ];
 
-    this.backgroundImage = loadImage(ImageLibrary.BASE_DIR + "Chess Basic.png");
+    this.backgroundImage = loadImage(
+      ImageLibrary.BASE_DIR + "Chess Map Basic.png"
+    );
 
     // for (let i = 1; i <= 5; i++) {
     //   let photo = loadImage(BASE_DIR + `photo${i}.png`);

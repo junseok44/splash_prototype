@@ -162,28 +162,133 @@ class UI {
     }
 
     // attacker, defender의 체력 UI 표시 (몇개 남았는지)
-    for (let i = 0; i < this.player1.life; i++) {
+    // for (let i = 0; i < this.player1.life; i++) {
+    //   push();
+    //   noStroke();
+    //   fill(255, 0, 0);
+    //   ellipse(
+    //     i * 50 + this.playerLifeUIOffset,
+    //     this.playerLifeUIheight,
+    //     30,
+    //     30
+    //   );
+    //   pop();
+    // }
+
+    // for (let i = 0; i < this.player2.life; i++) {
+    //   push();
+    //   fill(255, 0, 0);
+    //   noStroke();
+    //   ellipse(
+    //     this.canvasWidth - i * 50 - this.playerLifeUIOffset,
+    //     this.playerLifeUIheight,
+    //     30,
+    //     30
+    //   );
+    //   pop();
+    // }
+
+    // Change circles to hearts
+    for (let i = 5; i > this.player1.life && i > 0; i--) {
       push();
       noStroke();
-      fill(255, 0, 0);
-      ellipse(
-        i * 50 + this.playerLifeUIOffset,
-        this.playerLifeUIheight,
-        30,
-        30
+      fill(0, 0, 0);
+      rect(
+        (i * this.canvasWidth) / 26 + this.canvasWidth / 11.4,
+        this.playerLifeUIheight * 0.98,
+        this.canvasWidth * 0.032,
+        this.playerLifeUIheight * 0.42
       );
       pop();
     }
 
-    for (let i = 0; i < this.player2.life; i++) {
+    for (let i = 5; i > this.player2.life && i > 0; i--) {
       push();
-      fill(255, 0, 0);
+      fill(0, 0, 0);
       noStroke();
-      ellipse(
-        this.canvasWidth - i * 50 - this.playerLifeUIOffset,
-        this.playerLifeUIheight,
-        30,
-        30
+      rect(
+        this.canvasWidth - (i * this.canvasWidth) / 25 - this.canvasWidth / 9.4,
+        this.playerLifeUIheight * 0.98,
+        this.canvasWidth * 0.037,
+        this.playerLifeUIheight * 0.42
+      );
+      pop();
+    }
+
+    //점수계산
+    for (let i = 0; i < 600; i = i + 50) {
+      push();
+      fill(0);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.6 + i * (this.canvasWidth / 2211),
+        (2.3 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.018,
+        (1.2 * this.playerLifeUIheight) / 5
+      );
+      fill(30, 130, 130);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.6 + i * (this.canvasWidth / 2211),
+        (2.3 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.015,
+        (1.1 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
+
+    for (let i = 0; i < 600; i = i + 50) {
+      push();
+      fill(0);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 1.624 + i * (this.canvasWidth / 2211),
+        (2.3 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.0199,
+        (1.2 * this.playerLifeUIheight) / 5
+      );
+      fill(90, 50, 120);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 1.624 + i * (this.canvasWidth / 2211),
+        (2.3 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.016,
+        (1.1 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
+
+    //offense advantage
+    for (
+      let i = 550;
+      i >= (600 * (2 * inkAreaRatio.toFixed(0))) / 100;
+      i = i - 50
+    ) {
+      push();
+      fill(90, 50, 120);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.6 + i * (this.canvasWidth / 2211),
+        (2.3 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.015,
+        (1.1 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
+
+    for (
+      let i = 0;
+      i <= ((600 * inkAreaRatio.toFixed(0)) / 100 - 300) * 2;
+      i = i + 50
+    ) {
+      push();
+      fill(30, 130, 130);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 1.624 + i * (this.canvasWidth / 2211),
+        (2.3 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.016,
+        (1.1 * this.playerLifeUIheight) / 5
       );
       pop();
     }
