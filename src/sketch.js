@@ -53,7 +53,7 @@ function setup() {
     rotate_r: 190,
     pg: pg,
   });
-  itemManager = new ItemManager();
+  itemManager = new ItemManager({ player1, player2 });
   gm = new GameManager({ player1, player2 });
   ui = new UI({ player1, player2, width, height });
   ink = new InkPattern(100);

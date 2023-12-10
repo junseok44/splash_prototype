@@ -18,7 +18,7 @@ class GameManager {
     this.itemResetTimer = null;
   }
 
-  static randomItemDisplayInterval = 10000;
+  static randomItemDisplayInterval = 8000;
   static randomItemDisplayDuration = 5000;
 
   static checkCurrentItemEater(keyCode, { player1, player2 }) {
@@ -50,15 +50,25 @@ class GameManager {
       player2: this.player2,
     });
 
-    this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
+    // this.setCurrentItemTypeAndImage(ItemManager.pickRandomItem(), imageLib);
 
     // 테스트용.
     // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.RANGE_UP, imageLib);
     // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.SPEED_UP, imageLib);
-    // this.setCurrentItemTypeAndImage(ItemManager.itemTypes.REVERSE, imageLib);
+    this.setCurrentItemTypeAndImage(ItemManager.itemTypes.REVERSE, imageLib);
 
     // keyCode가 다른게 되는 경우가 있어서,
-    this.currentItemEater.setItemType(this.currentItemType);
+
+    // REVERSE의 경우 리버스 이펙트는 currentItemEater가 아닌 플레이어가 되어야함.
+    if (this.currentItemType == ItemManager.itemTypes.REVERSE) {
+      if (this.currentItemEater == this.player1) {
+        this.player2.setItemType(this.currentItemType);
+      } else {
+        this.player1.setItemType(this.currentItemType);
+      }
+    } else {
+      this.currentItemEater.setItemType(this.currentItemType);
+    }
 
     this.itemResetTimer = setTimeout(() => {
       if (itemManager.deactivateItemCallback)

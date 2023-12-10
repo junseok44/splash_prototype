@@ -1,7 +1,9 @@
 class ItemManager {
-  constructor() {
+  constructor({ player1, player2 }) {
     this.isItemActivated = false;
     this.deactivateItemCallback = null;
+    this.player1 = player1;
+    this.player2 = player2;
   }
 
   static itemEffectTime = 3000;
@@ -55,12 +57,17 @@ class ItemManager {
   }
 
   applyReverseEffect(itemEater) {
-    itemEater.isReversed = true;
-    itemEater.itemType = ItemManager.itemTypes.REVERSE;
-
-    this.deactivateItemCallback = () => {
-      itemEater.isReversed = false;
-    };
+    if (itemEater instanceof Defender) {
+      this.player1.isReversed = true;
+      this.deactivateItemCallback = () => {
+        this.player1.isReversed = false;
+      };
+    } else {
+      this.player2.isReversed = true;
+      this.deactivateItemCallback = () => {
+        this.player2.isReversed = false;
+      };
+    }
 
     // setTimeout(() => {
     //   itemEater.isReversed = false;
