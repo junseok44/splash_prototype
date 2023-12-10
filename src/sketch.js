@@ -91,20 +91,28 @@ function draw() {
 
       // 게임 끝났을때의 ui
       if (system.isEndGame) {
-        let resultImage;
-
+        let winner;
+        let winnerImage;
         if (system.inkAreaRatio > 50) {
-          resultImage = finalImage1;
+          winner = player1;
         } else {
-          resultImage = finalImage;
+          winner = player2;
         }
 
-        ui.drawGameResultScreen(resultImage);
+        winnerImage = imageLib.getResultImage(winner);
+        image(winnerImage, 0, 0, width, height);
         return;
       }
 
       // 메인 게임 ui
       ui.drawMainGameScreen(system.inkAreaRatio, system.countdown);
+
+      // // pg 레이어 절반 채우고 색 확인
+      // push();
+      // translate((windowWidth * 11) / 100, (windowHeight * 23) / 100);
+      // pg.fill(255, 78, 202);
+      // pg.rect(0, 0, (windowWidth * 78) / 100, (windowHeight * 38) / 100);
+      // pop();
 
       // 플레이어1, 플레이어2 그리기
       player1.display();

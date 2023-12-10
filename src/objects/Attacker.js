@@ -4,7 +4,7 @@ class Attacker extends Player {
     this.deg = PI / 2;
   }
 
-  static attackInterval = 200;
+  static attackInterval = 150;
 
   rangeUp(value) {
     // Attacker.attackInterval -= value;

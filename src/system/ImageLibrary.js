@@ -35,6 +35,14 @@ class ImageLibrary {
     // }
   }
 
+  getResultImage(winner) {
+    console.log(winner);
+    if (winner instanceof Attacker) {
+      return this.resultImages[1];
+    } else {
+      return this.resultImages[0];
+    }
+  }
   getItemImage(type) {
     switch (type) {
       case ItemManager.itemTypes.SPEED_UP:
