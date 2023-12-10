@@ -98,8 +98,16 @@ class UI {
     rect(this.canvasWidth - this.itemUIOffset, this.itemUIheight, 100, 100);
     fill(0);
     noStroke();
+    textSize(20);
     text("Item slot", this.itemUIOffset, this.itemUIheight);
     text("Item slot", this.canvasWidth - this.itemUIOffset, this.itemUIheight);
+    textSize(15);
+    text("press T", this.itemUIOffset, this.itemUIheight + 20);
+    text(
+      "Press P",
+      this.canvasWidth - this.itemUIOffset,
+      this.itemUIheight + 20
+    );
 
     pop();
 
