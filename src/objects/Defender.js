@@ -109,6 +109,8 @@ class Defender extends Player {
         circlesToRemove.push(i);
         bullet.coordX = 9999;
         bullet.coordY = 9999;
+        this.minimiX.splice(i, 1);
+        this.minimiY.splice(i, 1);
       }
     }
 
