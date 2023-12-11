@@ -10,6 +10,8 @@ class ImageLibrary {
   loadImages() {
     this.randomItemImage = loadImage(ImageLibrary.BASE_DIR + "item.png");
 
+    this.tutorialImages = [];
+
     this.itemImages = [
       loadImage(ImageLibrary.BASE_DIR + "image10.png"), // 속도
       loadImage(ImageLibrary.BASE_DIR + "image11.png"), // 범위

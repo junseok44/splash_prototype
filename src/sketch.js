@@ -31,6 +31,7 @@ function preload() {
   images.push(loadImage("src/assets/image/tutorial/ChessMapBasic.png"));
   images.push(loadImage("src/assets/image/tutorial/ChessMapBasic.png"));
   images.push(loadImage("src/assets/image/tutorial/Item.png"));
+  images.push(loadImage("src/assets/image/tutorial/ChessMapBasic.png"));
 
   AkeyImage = loadImage("src/assets/image/tutorial/AttackerKey.png");
   QeImage = loadImage("src/assets/image/tutorial/Q,E,R.png");
@@ -332,7 +333,7 @@ function keyPressed() {
 }
 
 function nextImage() {
-  if (currentImageIndex === 8) {
+  if (currentImageIndex === 9) {
     system.phase = System.PHASE.MAIN_GAME;
     return;
   }
@@ -394,8 +395,8 @@ function displayImage() {
     let line1 = "1. 수비의 방향키:";
     text(line1, width / 2 + 220, height / 4 + 20);
     textSize(15);
-    let line2 = "수비는 자동으로 수비가 되어요.";
-    text(line2, width / 2 + 280, height / 4 + 50);
+    let line2 = "수비는 움직이면서 자동으로 잉크를 닦을 수 있어요!";
+    text(line2, width / 2 + 500, height / 4 + 50);
 
     let defArImageX = width / 2 + 90;
     let defArImageY = height / 2 - 10;
@@ -533,28 +534,53 @@ function displayImage() {
     textAlign(CENTER);
     textSize(30);
     let line3 = "공격";
-    text(line3, width / 2 - 160, height / 2 + 30);
+    text(line3, width / 2 - 200, height / 2 + 30);
 
     textSize(35);
     let line4 = "'T 키'";
-    text(line4, width / 2 - 160, height / 2 + 80);
+    text(line4, width / 2 - 200, height / 2 + 80);
 
     fill(255, 0, 0);
     textSize(30);
     let line5 = "수비";
-    text(line5, width / 2 + 160, height / 2 + 30);
+    text(line5, width / 2 + 200, height / 2 + 30);
 
     textSize(35);
-    let line6 = "'/ 키'";
-    text(line6, width / 2 + 160, height / 2 + 80);
+    let line6 = "'? 키'";
+    text(line6, width / 2 + 200, height / 2 + 80);
 
     fill(0);
     textSize(15);
     let line7 = "아이템 획득키를 먼저 누르는 사람이 획득하게 됩니다.(선착순)";
-    text(line7, width / 2 - 30, height / 2 + 150);
+    text(line7, width / 2 - 30, height / 2 + 200);
 
     let line8 = "아이템 지속시간: 5초(이후에는 원래대로 돌아와요)";
-    text(line8, width / 2 - 65, height / 2 + 170);
+    text(line8, width / 2 - 65, height / 2 + 240);
+  }
+
+  if (currentImageIndex === 9) {
+    push();
+    fill(0);
+
+    textSize(40);
+    textAlign(CENTER);
+    text("직접 공격 시스템", width / 2, height / 2 - 65);
+    textSize(20);
+    text("공격은 잉크총을 상대방에게 발사해서", width / 2, height / 2 - 20);
+    text("수비는 미니미가 상대방에게 부딪히면.", width / 2, height / 2 + 20);
+    text("상대방을 직접 공격할 수 있어요.", width / 2, height / 2 + 60);
+    text("공격을 받으면 하트가 -1 줄어요.", width / 2, height / 2 + 100);
+    text(
+      "하트가 0이 되면 5초동안 행동 정지 상태가 됩니다.",
+      width / 2,
+      height / 2 + 140
+    );
+
+    push();
+    fill(255, 0, 0);
+    text("자 이제 준비되었나요??", width / 2, height / 2 + 200);
+    text("ENTER 키를 눌러 게임을 시작하세요!", width / 2, height / 2 + 240);
+    pop();
   }
 }
 
