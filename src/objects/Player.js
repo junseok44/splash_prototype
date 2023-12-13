@@ -13,6 +13,7 @@ class Player {
     rotate_l,
     rotate_r,
     attack,
+    itemCode,
   }) {
     this.x = x;
     this.y = y;
@@ -21,6 +22,7 @@ class Player {
     this.width = width;
     this.height = height;
 
+    this.itemCode = itemCode;
     this.lcode = l;
     this.rcode = r;
     this.ucode = u;

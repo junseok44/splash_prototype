@@ -83,7 +83,7 @@ class GameManager {
   }
 
   static checkCurrentItemEater(keyCode, { player1, player2 }) {
-    if (keyCode === 84) {
+    if (keyCode === player1.itemCode) {
       return player1;
     } else {
       return player2;

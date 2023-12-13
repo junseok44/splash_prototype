@@ -60,9 +60,10 @@ function setup() {
     r: 68,
     u: 87,
     d: 83,
-    rotate_l: 81,
-    rotate_r: 69,
+    rotate_l: 49,
+    rotate_r: 50,
     attack: 82,
+    itemCode: 51,
   });
   player2 = new Defender({
     x: windowWidth / 2 + 100,
@@ -77,6 +78,7 @@ function setup() {
     d: 40,
     rotate_l: 188,
     rotate_r: 190,
+    itemCode: 191,
     pg: pg,
   });
   gm = new GameManager({ player1, player2, pg, bullets });
@@ -212,7 +214,7 @@ function draw() {
       if (gm.isDisplayRandomItemImage) {
         ui.drawGameItemImage(imageLib.randomItemImage);
 
-        if (keyCode === 84 || keyCode === 80) {
+        if (keyCode === player1.itemCode || keyCode === player2.itemCode) {
           gm.setCurrentItemStatus(keyCode, imageLib, itemManager);
 
           itemManager.activateItemEffect({
