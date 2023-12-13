@@ -22,7 +22,7 @@ class GameManager {
   }
 
   static gameCountDownSec = 120;
-  static randomItemDisplayInterval = 8000;
+  static randomItemDisplayInterval = 2000;
   static randomItemDisplayDuration = 5000;
   static calculateInkAreaRatioInterval = 5000;
 
@@ -63,10 +63,6 @@ class GameManager {
   startMainGame() {
     this.initializeMainGame();
 
-    // setTimeout(() => {
-    //   this.initializeMainGame();
-    // }, 10000);
-
     this._randomItemDisplayTimer = setInterval(() => {
       this.showRandomItemImage();
     }, GameManager.randomItemDisplayInterval);
@@ -86,6 +82,7 @@ class GameManager {
     if (keyCode === 84) {
       return player1;
     } else {
+      return player2;
     }
   }
 
@@ -150,6 +147,7 @@ class GameManager {
     // keyCode가 다른게 되는 경우가 있어서,
 
     // REVERSE의 경우 리버스 이펙트는 currentItemEater가 아닌 플레이어가 되어야함.
+
     if (this.currentItemType == ItemManager.itemTypes.REVERSE) {
       if (this.currentItemEater == this.player1) {
         this.player2.setItemType(this.currentItemType);

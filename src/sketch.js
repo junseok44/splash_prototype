@@ -231,6 +231,7 @@ function draw() {
         ui.drawItemToolTip(gm.currentItemType, gm.currentItemEater == player1);
       }
 
+      // breaking news
       if (player1.isDead) {
         push();
         fill(255, 0, 0, 200);
