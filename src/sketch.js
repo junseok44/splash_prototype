@@ -546,7 +546,7 @@ function displayImage() {
     text(line5, width / 2 + 200, height / 2 + 30);
 
     textSize(35);
-    let line6 = "'? 키'";
+    let line6 = "'P 키'";
     text(line6, width / 2 + 200, height / 2 + 80);
 
     fill(0);

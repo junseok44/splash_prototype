@@ -21,7 +21,7 @@ class InkPattern {
     this.ink = InkPattern.makeInkPattern(patternSize);
   }
 
-  static originalInkMaxSize = 40;
+  static originalInkMaxSize = 65;
 
   changeInkPatternSize(maxSize) {
     this.ink = InkPattern.makeInkPattern(this.patternSize, maxSize);
