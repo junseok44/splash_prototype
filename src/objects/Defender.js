@@ -3,11 +3,12 @@ class Defender extends Player {
     super(args);
     this.pg = args.pg;
     this.circles = [];
-    this.minimiArray = [];
+    // this.minimiArray = [];
     this.minimiPosition = this.width;
     this.minimiSize = this.width / 3;
     this.minimiX = [];
     this.minimiY = [];
+    this.minimiRotation = 0;
   }
 
   static cleanRange = 65;
@@ -27,6 +28,10 @@ class Defender extends Player {
 
   rangeUp(value) {
     Defender.cleanRange += value;
+  }
+
+  rotate(deltaDeg) {
+    this.minimiRotation += deltaDeg;
   }
 
   attack() {
@@ -83,8 +88,8 @@ class Defender extends Player {
     for (let i = 0; i < this.circles.length; i++) {
       push();
       translate(this.x, this.y);
-      let rotation = millis() * 0.001;
-      let circleAngle = this.circles[i] + rotation;
+      // let rotation = millis() * 0.001;
+      let circleAngle = this.circles[i] + this.minimiRotation;
       this.minimiX[i] = this.minimiPosition * cos(circleAngle);
       this.minimiY[i] = this.minimiPosition * sin(circleAngle);
       this.minimiArray.push(this.minimiX[i], this.minimiY[i]);

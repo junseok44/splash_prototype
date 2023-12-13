@@ -2,7 +2,7 @@ class System {
   constructor({ pg }) {
     this.pg = pg;
     this.inkAreaRatio = 0;
-    this.phase = System.PHASE.TUTORIAL;
+    this.phase = System.PHASE.MAIN_GAME;
     this.countdown = 120;
   }
 

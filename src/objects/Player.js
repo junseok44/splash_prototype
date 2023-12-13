@@ -136,6 +136,10 @@ class Player {
     }
   }
 
+  rotate(deltaDeg) {
+    this.deg += deltaDeg;
+  }
+
   move() {
     if (this.isReversed) {
       if (keyIsDown(this.lcode)) this.moveTo("right");
@@ -152,10 +156,10 @@ class Player {
     if (keyIsDown(this.dcode)) this.moveTo("down");
 
     if (keyIsDown(this.rotate_lcode)) {
-      this.deg -= 0.1;
+      this.rotate(-0.1);
     }
     if (keyIsDown(this.rotate_rcode)) {
-      this.deg += 0.1;
+      this.rotate(0.1);
     }
   }
 
