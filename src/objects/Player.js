@@ -16,6 +16,8 @@ class Player {
   }) {
     this.x = x;
     this.y = y;
+    this.initialX = x;
+    this.initialY = y;
     this.width = width;
     this.height = height;
 
@@ -57,17 +59,25 @@ class Player {
     return { x: new_x, y: new_y };
   }
 
+  initialize() {
+    this.life = Player.playerLife;
+    this.isDead = false;
+    this.isReversed = false;
+    this.moveSpeed = 5;
+    this.isHit = false;
+    this.deg = 0;
+    this.collisionSide = null;
+    this.itemType = null;
+    this.x = this.initialX;
+    this.y = this.initialY;
+  }
+
   // 추상메서드. 자식 클래스에서 반드시 구현해야 함.
   attack() {
     throw Error("this method must be implemented");
   }
 
-  // rangeUp() {
-  //   throw Error("this method must be implemented");
-  // }
-
   reverse() {
-    console.log("reverse");
     this.reversed = !this.reversed;
   }
 

@@ -49,7 +49,6 @@ function setup() {
   pg = createGraphics((windowWidth * 78) / 100, (windowHeight * 74) / 100);
   pg.noStroke();
 
-  system = new System({ pg });
   player1 = new Attacker({
     x: windowWidth / 2 - 100,
     y: windowHeight / 2,
@@ -80,22 +79,16 @@ function setup() {
     rotate_r: 190,
     pg: pg,
   });
+  gm = new GameManager({ player1, player2, pg, bullets });
+  system = new System({ pg, gm });
+
+  system.changePhase(System.PHASE.MAIN_GAME);
+
   itemManager = new ItemManager({ player1, player2 });
-  gm = new GameManager({ player1, player2 });
   ui = new UI({ player1, player2, width, height });
   ink = new InkPattern(100);
 
   rectMode(CENTER);
-  player2.minimiInitialize();
-
-  setInterval(() => {
-    system.calculateInkAreaRatio();
-  }, 5000);
-
-  // 랜덤 아이템 표시인 ? 를 표시하고, 사라지게 하는 로직
-  setInterval(() => {
-    gm.showRandomItemImage();
-  }, GameManager.randomItemDisplayInterval);
 }
 
 function draw() {
@@ -118,10 +111,10 @@ function draw() {
       );
 
       // 게임 끝났을때의 ui
-      if (system.isEndGame) {
+      if (gm.isEndGame) {
         let winner;
         let winnerImage;
-        if (system.inkAreaRatio > 50) {
+        if (gm.inkAreaRatio > 50) {
           winner = player1;
         } else {
           winner = player2;
@@ -133,7 +126,7 @@ function draw() {
       }
 
       // 메인 게임 ui
-      ui.drawMainGameScreen(system.inkAreaRatio, system.countdown);
+      ui.drawMainGameScreen(gm.inkAreaRatio, gm.countdown);
 
       // // pg 레이어 절반 채우고 색 확인
       // push();
@@ -236,10 +229,6 @@ function draw() {
           gm.currentItemEater == player1
         );
         ui.drawItemToolTip(gm.currentItemType, gm.currentItemEater == player1);
-      }
-
-      if (frameCount % 60 === 0 && system.countdown > 0) {
-        system.timeLapse();
       }
 
       if (player1.isDead) {

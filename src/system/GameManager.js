@@ -1,12 +1,10 @@
 class GameManager {
-  // 아이템 효과 관련 로직을 총괄.
-  // 카운트다운.
-  // 잉크 비율도 여기서 관리하도록.
-  // 본 게임에서 게임 스타트 이런것도 해야하니까.
+  constructor({ player1, player2, pg, bullets }) {
+    this.countdown = GameManager.gameCountDownSec;
 
-  // FIXME: 만약 두번째 아이템이 적용중인데, 랜덤 아이템이 나오면? 지금 안
+    this.inkAreaRatio = 0;
+    this.pg = pg;
 
-  constructor({ player1, player2 }) {
     this._currentItemType = null;
     this._currentItemImage = null;
     this._currentItemEater = null;
@@ -14,19 +12,111 @@ class GameManager {
     this.player1 = player1;
     this.player2 = player2;
 
+    this.bullets = bullets;
+
     this.isDisplayRandomItemImage = false;
     this.itemResetTimer = null;
+
+    this._randomItemDisplayTimer = null;
+    this._calculateInkAreaRatioTimer = null;
   }
 
+  static gameCountDownSec = 120;
   static randomItemDisplayInterval = 8000;
   static randomItemDisplayDuration = 5000;
+  static calculateInkAreaRatioInterval = 5000;
+
+  static isColorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold) {
+    return (
+      Math.abs(r1 - r2) <= threshold &&
+      Math.abs(g1 - g2) <= threshold &&
+      Math.abs(b1 - b2) <= threshold &&
+      Math.abs(a1 - a2) <= threshold
+    );
+  }
+
+  get isEndGame() {
+    return this.countdown <= 0;
+  }
+
+  timeLapse() {
+    this.countdown--;
+  }
+
+  initializeMainGame() {
+    this.resetItem();
+    this.countdown = GameManager.gameCountDownSec;
+    this.inkAreaRatio = 0;
+    this.isDisplayRandomItemImage = false;
+    this.pg.clear();
+    this.pg.fill(255);
+
+    if (this._randomItemDisplayTimer)
+      clearInterval(this._randomItemDisplayTimer);
+    if (this._calculateInkAreaRatioTimer)
+      clearInterval(this._calculateInkAreaRatioTimer);
+
+    player1.initialize();
+    player2.initialize();
+  }
+
+  startMainGame() {
+    this.initializeMainGame();
+
+    // setTimeout(() => {
+    //   this.initializeMainGame();
+    // }, 10000);
+
+    this._randomItemDisplayTimer = setInterval(() => {
+      this.showRandomItemImage();
+    }, GameManager.randomItemDisplayInterval);
+
+    this._calculateInkAreaRatioTimer = setInterval(() => {
+      this.calculateInkAreaRatio();
+    }, GameManager.calculateInkAreaRatioInterval);
+
+    setInterval(() => {
+      this.timeLapse();
+    }, 1000);
+
+    this.player2.minimiInitialize();
+  }
 
   static checkCurrentItemEater(keyCode, { player1, player2 }) {
     if (keyCode === 84) {
       return player1;
-    } else if (keyCode === 80) {
-      return player2;
+    } else {
     }
+  }
+
+  calculateInkAreaRatio() {
+    console.log("calculateInkAreaRatio");
+
+    let pg = this.pg;
+
+    pg.loadPixels();
+
+    let totalPixels = pg.pixels.length / 4;
+    let inkedPixels = 0;
+
+    // 픽셀 띄엄띄엄 확인하기
+    let skipPixels = 10;
+
+    for (let i = 0; i < pg.pixels.length; i += 4) {
+      let r = pg.pixels[i];
+      let g = pg.pixels[i + 1];
+      let b = pg.pixels[i + 2];
+      let a = pg.pixels[i + 3];
+
+      // 특정 색상 (rgb(255,78,202))이면 inkedPixels를 증가
+      if (GameManager.isColorMatch(r, g, b, a, 255, 78, 202, 255, 100)) {
+        inkedPixels++;
+      }
+    }
+    pg.updatePixels();
+
+    // inkAreaRatio를 0 미만으로 되지 않도록 조정
+    this.inkAreaRatio = max(min((inkedPixels / totalPixels) * 100, 100), 0);
   }
 
   showRandomItemImage() {
