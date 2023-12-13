@@ -320,6 +320,10 @@ function keyPressed() {
   } else if (keyCode === BACKSPACE) {
     prevImage();
   }
+
+  if (keyCode === 85) {
+    gm.startMainGame();
+  }
 }
 
 function nextImage() {

@@ -19,6 +19,7 @@ class GameManager {
 
     this._randomItemDisplayTimer = null;
     this._calculateInkAreaRatioTimer = null;
+    this._countdownTimer = null;
   }
 
   static gameCountDownSec = 120;
@@ -51,10 +52,13 @@ class GameManager {
     this.pg.clear();
     this.pg.fill(255);
 
+    this.bullets = [];
+
     if (this._randomItemDisplayTimer)
       clearInterval(this._randomItemDisplayTimer);
     if (this._calculateInkAreaRatioTimer)
       clearInterval(this._calculateInkAreaRatioTimer);
+    if (this._countdownTimer) clearInterval(this._countdownTimer);
 
     player1.initialize();
     player2.initialize();
@@ -71,7 +75,7 @@ class GameManager {
       this.calculateInkAreaRatio();
     }, GameManager.calculateInkAreaRatioInterval);
 
-    setInterval(() => {
+    this._countdownTimer = setInterval(() => {
       this.timeLapse();
     }, 1000);
 
