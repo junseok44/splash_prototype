@@ -37,7 +37,8 @@ class Bullet {
     } else if (this.yPos > -this.distance) {
       this.move();
       stroke(Bullet.BulletColor);
-      fill(this.color);
+      strokeWeight(5);
+      fill(Bullet.BulletColor);
       noStroke();
       ellipse(0, this.yPos, this.width, this.height);
     }

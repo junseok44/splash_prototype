@@ -36,6 +36,14 @@ class GameManager {
     );
   }
 
+  static checkCurrentItemEater(keyCode, { player1, player2 }) {
+    if (keyCode === player1.itemCode) {
+      return player1;
+    } else {
+      return player2;
+    }
+  }
+
   get isEndGame() {
     return this.countdown <= 0;
   }
@@ -80,14 +88,6 @@ class GameManager {
     }, 1000);
 
     this.player2.minimiInitialize();
-  }
-
-  static checkCurrentItemEater(keyCode, { player1, player2 }) {
-    if (keyCode === player1.itemCode) {
-      return player1;
-    } else {
-      return player2;
-    }
   }
 
   calculateInkAreaRatio() {
