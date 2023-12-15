@@ -70,6 +70,8 @@ class Defender extends Player {
 
   //minimi  10개 생성
   minimiInitialize() {
+    this.circles = [];
+
     let numCircles = 10;
 
     for (let i = 0; i < numCircles; i++) {

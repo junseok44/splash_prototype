@@ -18,6 +18,15 @@ class ImageLibrary {
       loadImage(ImageLibrary.BASE_DIR + "image12.png"), // 리버스
     ];
 
+    this.tutorialImages = [
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/OffenseTutorialFirst.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/OffenseTutorialSecond.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/OffenseTutorialThird.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/DefenseTutorialFirst.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/DefenseTutorialSecond.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/DefenseTutorialThird.png"),
+    ];
+
     this.resultImages = [
       loadImage(ImageLibrary.BASE_DIR + "Chess Map Winner.png"),
       loadImage(ImageLibrary.BASE_DIR + "Chess Map Winner 1.png"),
@@ -35,6 +44,10 @@ class ImageLibrary {
     //   let pic = loadImage(BASE_DIR + `Pic${i}.png`);
     //   choices.push(pic);
     // }
+  }
+
+  getTutorialImage(index) {
+    return this.tutorialImages[index];
   }
 
   getResultImage(winner) {

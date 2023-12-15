@@ -23,7 +23,7 @@ class GameManager {
   }
 
   static gameCountDownSec = 120;
-  static randomItemDisplayInterval = 2000;
+  static randomItemDisplayInterval = 8000;
   static randomItemDisplayDuration = 5000;
   static calculateInkAreaRatioInterval = 5000;
 
@@ -57,10 +57,10 @@ class GameManager {
     this.countdown = GameManager.gameCountDownSec;
     this.inkAreaRatio = 0;
     this.isDisplayRandomItemImage = false;
+    bullets = [];
+
     this.pg.clear();
     this.pg.fill(255);
-
-    this.bullets = [];
 
     if (this._randomItemDisplayTimer)
       clearInterval(this._randomItemDisplayTimer);

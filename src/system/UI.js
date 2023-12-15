@@ -9,6 +9,14 @@ class UI {
     this.player1DeadTime = 0;
     this.player2DeadTime = 0;
 
+    this.tutorialBoxWidth = (this.canvasWidth / 100) * 43;
+    this.tutorialBoxHeight = (this.canvasHeight / 100) * 75;
+
+    this.tutorialBoxBottomOffset = (this.canvasHeight / 100) * 9.5;
+    this.tutorialBoxTopOffset = (this.canvasHeight / 100) * 20;
+    this.tutorialBoxWideOffset = (this.canvasWidth / 100) * 54.7;
+    this.tutorialBoxNarrowOffset = (this.canvasWidth / 100) * 2.7;
+
     this.UIHeight = (this.canvasHeight / 100) * 20;
     this.horizontalGridOffset = (this.canvasWidth / 100) * 11;
     this.verticalGridOffset = (this.canvasHeight / 100) * 3;

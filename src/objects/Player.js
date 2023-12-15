@@ -14,6 +14,7 @@ class Player {
     rotate_r,
     attack,
     itemCode,
+    constraints,
   }) {
     this.x = x;
     this.y = y;
@@ -21,6 +22,9 @@ class Player {
     this.initialY = y;
     this.width = width;
     this.height = height;
+
+    this.constraints = constraints;
+    // constraints = { left, top, bottom, right}의 상대좌표들.
 
     this.itemCode = itemCode;
     this.lcode = l;
@@ -59,6 +63,13 @@ class Player {
     const new_x = x * cos_a - y * sin_a + center_x;
     const new_y = x * sin_a + y * cos_a + center_y;
     return { x: new_x, y: new_y };
+  }
+
+  setInitialPosition({ x, y }) {
+    this.initialX = x;
+    this.initialY = y;
+    this.x = x;
+    this.y = y;
   }
 
   initialize() {
@@ -152,20 +163,20 @@ class Player {
     this.deg += deltaDeg;
   }
 
-  move() {
+  move(constraints) {
     if (this.isReversed) {
-      if (keyIsDown(this.lcode)) this.moveTo("right");
-      if (keyIsDown(this.rcode)) this.moveTo("left");
-      if (keyIsDown(this.ucode)) this.moveTo("down");
-      if (keyIsDown(this.dcode)) this.moveTo("up");
+      if (keyIsDown(this.lcode)) this.moveTo("right", constraints);
+      if (keyIsDown(this.rcode)) this.moveTo("left", constraints);
+      if (keyIsDown(this.ucode)) this.moveTo("down", constraints);
+      if (keyIsDown(this.dcode)) this.moveTo("up", constraints);
 
       return;
     }
 
-    if (keyIsDown(this.lcode)) this.moveTo("left");
-    if (keyIsDown(this.rcode)) this.moveTo("right");
-    if (keyIsDown(this.ucode)) this.moveTo("up");
-    if (keyIsDown(this.dcode)) this.moveTo("down");
+    if (keyIsDown(this.lcode)) this.moveTo("left", constraints);
+    if (keyIsDown(this.rcode)) this.moveTo("right", constraints);
+    if (keyIsDown(this.ucode)) this.moveTo("up", constraints);
+    if (keyIsDown(this.dcode)) this.moveTo("down", constraints);
 
     if (keyIsDown(this.rotate_lcode)) {
       this.rotate(-0.1);
@@ -179,13 +190,13 @@ class Player {
     this.moveSpeed = speed;
   }
 
-  moveTo(direction) {
+  moveTo(direction, constraints) {
     let diagonal = (this.width / 2) * Math.sqrt(2);
 
     switch (direction) {
       case "left":
         if (
-          this.x <= diagonal + ui.horizontalGridOffset ||
+          this.x <= diagonal + constraints.left ||
           this.collisionSide == "left"
         ) {
           console.log("lets return");
@@ -195,23 +206,20 @@ class Player {
         break;
       case "right":
         if (
-          this.x >= width - diagonal - ui.horizontalGridOffset ||
+          this.x >= width - diagonal - constraints.right ||
           this.collisionSide == "right"
         )
           return;
         this.x += this.moveSpeed;
         break;
       case "up":
-        if (
-          this.y <= diagonal + ui.UIHeight + ui.verticalGridOffset ||
-          this.collisionSide == "top"
-        )
+        if (this.y <= diagonal + constraints.top || this.collisionSide == "top")
           return;
         this.y -= this.moveSpeed;
         break;
       case "down":
         if (
-          this.y >= height - diagonal - ui.verticalGridOffset ||
+          this.y >= height - constraints.bottom ||
           this.collisionSide == "bottom"
         )
           return;
