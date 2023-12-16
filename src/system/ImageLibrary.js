@@ -19,17 +19,20 @@ class ImageLibrary {
     ];
 
     this.tutorialImages = [
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/OffenseTutorialFirst.png"),
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/OffenseTutorialSecond.png"),
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/OffenseTutorialThird.png"),
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/DefenseTutorialFirst.png"),
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/DefenseTutorialSecond.png"),
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/DefenseTutorialThird.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/1게임 목적.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/2공격 조작법.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/3공격 조작법 타격.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/4수비 조작법.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/5수비 조작법 타격.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/6직접 타격 설명.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/7아이템 종류.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/8아이템 체험.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/9UI 설명.png"),
     ];
 
     this.resultImages = [
-      loadImage(ImageLibrary.BASE_DIR + "Chess Map Winner.png"),
-      loadImage(ImageLibrary.BASE_DIR + "Chess Map Winner 1.png"),
+      loadImage(ImageLibrary.BASE_DIR + "공격 승리.png"),
+      loadImage(ImageLibrary.BASE_DIR + "수비 승리.png"),
     ];
 
     this.backgroundImage = loadImage(
@@ -53,9 +56,9 @@ class ImageLibrary {
   getResultImage(winner) {
     console.log(winner);
     if (winner instanceof Attacker) {
-      return this.resultImages[1];
-    } else {
       return this.resultImages[0];
+    } else {
+      return this.resultImages[1];
     }
   }
   getItemImage(type) {

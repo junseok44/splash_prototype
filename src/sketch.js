@@ -103,6 +103,7 @@ function draw() {
         width,
         height
       );
+
       image(
         pg,
         ui.tutorialBoxNarrowOffset,
@@ -111,7 +112,10 @@ function draw() {
         ui.tutorialBoxHeight
       );
 
-      if (tutorialManager.tutorialIndex <= 2) {
+      if (
+        tutorialManager.tutorialIndex <= 2 &&
+        tutorialManager.tutorialIndex > 0
+      ) {
         player1.display();
         player1.move({
           left: ui.tutorialBoxNarrowOffset,
