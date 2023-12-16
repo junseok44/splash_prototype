@@ -65,7 +65,7 @@ function setup() {
     pg,
   });
 
-  system.changePhase(System.PHASE.MAIN_GAME);
+  system.changePhase(System.PHASE.TUTORIAL);
 
   itemManager = new ItemManager({ player1, player2 });
   ui = new UI({ player1, player2, width, height });
@@ -169,7 +169,12 @@ function draw() {
       }
 
       // 메인 게임 ui
-      ui.drawMainGameScreen(gm.inkAreaRatio, gm.countdown);
+      ui.drawMainGameScreen(
+        gm.inkAreaRatio,
+        gm.countdown,
+        gm.isReady,
+        gm.isReadyEnd
+      );
 
       // // pg 레이어 절반 채우고 색 확인
       // push();
@@ -181,6 +186,11 @@ function draw() {
       // 플레이어1, 플레이어2 그리기
       player1.display();
       player2.display();
+
+      //minimi 보이기
+      player2.minimiDisplay();
+
+      if (!gm.isReady) return;
 
       // 죽지 않았을때만 움직이고 공격가능.
       if (!player1.isDead) {
@@ -202,9 +212,6 @@ function draw() {
         });
         player2.attack();
       }
-
-      //minimi 보이기
-      player2.minimiDisplay();
 
       // 미니미와 공격자 충돌 계산.
       for (let i = 0; i < player2.minimiX.length; i++) {

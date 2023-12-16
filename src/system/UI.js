@@ -53,9 +53,27 @@ class UI {
 
   drawTutorialScreen() {}
 
-  drawMainGameScreen(inkAreaRatio, countdown) {
+  drawMainGameScreen(inkAreaRatio, countdown, isReady, isReadyEnd) {
     textAlign(CENTER, CENTER);
     push();
+
+    if (!isReady) {
+      push();
+      textSize(50);
+      text("게임시작까지", this.canvasWidth / 2, this.canvasHeight / 2 - 100);
+      textSize(100);
+      text(countdown, this.canvasWidth / 2, this.canvasHeight / 2);
+      pop();
+    }
+
+    if (isReadyEnd) {
+      push();
+      textSize(50);
+      text("게임 종료까지", this.canvasWidth / 2, this.canvasHeight / 2 - 100);
+      textSize(100);
+      text(countdown, this.canvasWidth / 2, this.canvasHeight / 2);
+      pop();
+    }
 
     textSize(80);
     fill(0);

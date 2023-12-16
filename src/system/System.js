@@ -28,7 +28,7 @@ class System {
         break;
       case System.PHASE.MAIN_GAME:
         this.phase = System.PHASE.MAIN_GAME;
-        this.gameManager.startMainGame();
+        this.gameManager.startMainGameCountdown();
         break;
       case System.PHASE.GAME_RESULT:
         this.phase = System.PHASE.GAME_RESULT;
