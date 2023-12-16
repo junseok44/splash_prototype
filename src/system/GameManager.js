@@ -23,7 +23,7 @@ class GameManager {
   }
 
   static gameCountDownSec = 120;
-  static randomItemDisplayInterval = 8000;
+  static randomItemDisplayInterval = 5000;
   static randomItemDisplayDuration = 5000;
   static calculateInkAreaRatioInterval = 5000;
 

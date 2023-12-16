@@ -1,4 +1,5 @@
 class UI {
+  /*
   // player1, player2는 모두 player class를 상속받은 객체여야 합니다!
   constructor(args) {
     this.player1 = args.player1;
@@ -9,18 +10,9 @@ class UI {
     this.player1DeadTime = 0;
     this.player2DeadTime = 0;
 
-    this.tutorialBoxWidth = (this.canvasWidth / 100) * 43;
-    this.tutorialBoxHeight = (this.canvasHeight / 100) * 75;
-
-    this.tutorialBoxBottomOffset = (this.canvasHeight / 100) * 9.5;
-    this.tutorialBoxTopOffset = (this.canvasHeight / 100) * 20;
-    this.tutorialBoxWideOffset = (this.canvasWidth / 100) * 54.7;
-    this.tutorialBoxNarrowOffset = (this.canvasWidth / 100) * 2.7;
-
     this.UIHeight = (this.canvasHeight / 100) * 20;
     this.horizontalGridOffset = (this.canvasWidth / 100) * 11;
     this.verticalGridOffset = (this.canvasHeight / 100) * 3;
-
     this.playerLifeUIOffset = (this.canvasWidth / 100) * 14;
     this.playerLifeUIheight = (this.canvasHeight / 100) * 13;
 
@@ -52,7 +44,7 @@ class UI {
   drawSelectCharacterScreen() {}
 
   drawTutorialScreen() {}
-
+*/
   drawMainGameScreen(inkAreaRatio, countdown) {
     textAlign(CENTER, CENTER);
     push();
@@ -66,19 +58,19 @@ class UI {
     push();
     // display the percentage of pink pixels
     textAlign(CENTER, CENTER);
-    textSize(55);
+    textSize(85);
     textStyle(BOLD);
     fill(255);
     text(
-      round(inkAreaRatio) + "%", //정수값으로 도출
+      round(inkAreaRatio), //정수값으로 도출
       this.canvasWidth / 19.2,
-      this.canvasHeight / 3.2
+      this.canvasHeight / 3.3
     );
     fill(255);
     text(
-      100 - round(inkAreaRatio) + "%",
+      100 - round(inkAreaRatio),
       (18 * this.canvasWidth) / 19,
-      this.canvasHeight / 3.2
+      this.canvasHeight / 3.3
     );
 
     pop();
@@ -86,19 +78,23 @@ class UI {
     // item slot
     push();
     fill(255);
-    rect(this.itemUIOffset, this.itemUIheight, 100, 100);
-    rect(this.canvasWidth - this.itemUIOffset, this.itemUIheight, 100, 100);
+    rect(this.itemUIOffset, this.itemUIheight * 0.9, 95, 95); //크기 조정
+    rect(this.canvasWidth - this.itemUIOffset, this.itemUIheight * 0.9, 95, 95);
     fill(0);
     noStroke();
     textSize(20);
-    text("Item slot", this.itemUIOffset, this.itemUIheight);
-    text("Item slot", this.canvasWidth - this.itemUIOffset, this.itemUIheight);
+    text("Item slot", this.itemUIOffset, this.itemUIheight * 0.9);
+    text(
+      "Item slot",
+      this.canvasWidth - this.itemUIOffset,
+      this.itemUIheight * 0.9
+    );
     textSize(15);
-    text("press T", this.itemUIOffset, this.itemUIheight + 20);
+    text("press T", this.itemUIOffset, this.itemUIheight * 0.9 + 20);
     text(
       "Press P",
       this.canvasWidth - this.itemUIOffset,
-      this.itemUIheight + 20
+      this.itemUIheight * 0.9 + 20
     );
 
     pop();
@@ -106,16 +102,17 @@ class UI {
     push();
     rectMode(LEFT);
     rect(
-      this.itemTooltipUiOffset,
-      this.itemTooltipUiHeight,
-      UI.itemTooltipUiRectWidth,
-      UI.itemTooltipUiRectHeight
+      //위치조정
+      this.itemTooltipUiOffset * 0.98,
+      this.itemTooltipUiHeight * 0.97,
+      UI.itemTooltipUiRectWidth * 0.8,
+      UI.itemTooltipUiRectHeight * 0.97
     );
     rect(
-      this.canvasWidth - this.itemTooltipUiOffset,
-      this.itemTooltipUiHeight,
-      UI.itemTooltipUiRectWidth,
-      UI.itemTooltipUiRectHeight
+      this.canvasWidth - this.itemTooltipUiOffset * 1.08,
+      this.itemTooltipUiHeight * 0.97,
+      UI.itemTooltipUiRectWidth * 0.8,
+      UI.itemTooltipUiRectHeight * 0.97
     );
     pop();
 
@@ -175,49 +172,87 @@ class UI {
       pop();
     }
 
-    //점수계산
-    // for (let i = 0; i < 600; i = i + 50) {
-    //   push();
-    //   fill(0);
-    //   rectMode(CENTER);
-    //   rect(
-    //     this.canvasWidth / 8.6 + i * (this.canvasWidth / 2211),
-    //     (2.3 * this.playerLifeUIheight) / 5,
-    //     this.canvasWidth * 0.018,
-    //     (1.2 * this.playerLifeUIheight) / 5
-    //   );
-    //   fill(30, 130, 130);
-    //   rectMode(CENTER);
-    //   rect(
-    //     this.canvasWidth / 8.6 + i * (this.canvasWidth / 2211),
-    //     (2.3 * this.playerLifeUIheight) / 5,
-    //     this.canvasWidth * 0.015,
-    //     (1.1 * this.playerLifeUIheight) / 5
-    //   );
-    //   pop();
-    // }
+    //점수계산 -> 주석 처리 된 부분은 제거(이산적인 계산)
+    /*
+    for (let i = 0; i < 2300; i = i + 50) {
+      push();
+      fill(0);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.55 + i * (this.canvasWidth / 3000),
+        (2.355 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.013,
+        (1.655 * this.playerLifeUIheight) / 5
+      );
+      fill(55, 250, 230);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.55 + i * (this.canvasWidth / 3000),
+        (2.355 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.0095,
+        (1.3 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
 
-    // for (let i = 0; i < 600; i = i + 50) {
-    //   push();
-    //   fill(0);
-    //   rectMode(CENTER);
-    //   rect(
-    //     this.canvasWidth / 1.624 + i * (this.canvasWidth / 2211),
-    //     (2.3 * this.playerLifeUIheight) / 5,
-    //     this.canvasWidth * 0.0199,
-    //     (1.2 * this.playerLifeUIheight) / 5
-    //   );
-    //   fill(90, 50, 120);
-    //   rectMode(CENTER);
-    //   rect(
-    //     this.canvasWidth / 1.624 + i * (this.canvasWidth / 2211),
-    //     (2.3 * this.playerLifeUIheight) / 5,
-    //     this.canvasWidth * 0.016,
-    //     (1.1 * this.playerLifeUIheight) / 5
-    //   );
-    //   pop();
-    // }
+    for (let i = 0; i < 1150; i = i + 50) {
+      push();
+      fill(0);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.55 + i * (this.canvasWidth / 3000),
+        (2.355 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.013,
+        (1.655 * this.playerLifeUIheight) / 5
+      );
+      fill(90, 50, 120);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.55 + i * (this.canvasWidth / 3000),
+        (2.355 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.0095,
+        (1.3 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
 
+    //offense advantage
+    for (
+      let i = 2250;
+      i >= (2300 * (inkAreaRatio.toFixed(0))) / 100;
+      i = i - 50
+    ) {
+      push();
+      fill(250,205,65);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.55 + i * (this.canvasWidth / 3000),
+        (2.355 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.0095,
+        (1.3 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
+
+    for (
+      let i = 0;
+      i <= ((2300 * inkAreaRatio.toFixed(0)) / 100 - 1150);
+      i = i + 50
+    ) {
+      push();
+      fill(55, 250, 230);
+      rectMode(CENTER);
+      rect(
+        this.canvasWidth / 8.55 + i * (this.canvasWidth / 3000),
+        (2.355 * this.playerLifeUIheight) / 5,
+        this.canvasWidth * 0.0095,
+        (1.3 * this.playerLifeUIheight) / 5
+      );
+      pop();
+    }
+
+*/
+    //CHANGES
     push();
     noStroke();
     fill(25, 233, 250);
@@ -257,40 +292,7 @@ class UI {
 
     pop();
 
-    //offense advantage
-    // for (
-    //   let i = 550;
-    //   i >= (600 * (2 * inkAreaRatio.toFixed(0))) / 100;
-    //   i = i - 50
-    // ) {
-    //   push();
-    //   fill(90, 50, 120);
-    //   rectMode(CENTER);
-    //   rect(
-    //     this.canvasWidth / 8.6 + i * (this.canvasWidth / 2211),
-    //     (2.3 * this.playerLifeUIheight) / 5,
-    //     this.canvasWidth * 0.015,
-    //     (1.1 * this.playerLifeUIheight) / 5
-    //   );
-    //   pop();
-    // }
-
-    // for (
-    //   let i = 0;
-    //   i <= ((600 * inkAreaRatio.toFixed(0)) / 100 - 300) * 2;
-    //   i = i + 50
-    // ) {
-    //   push();
-    //   fill(30, 130, 130);
-    //   rectMode(CENTER);
-    //   rect(
-    //     this.canvasWidth / 1.624 + i * (this.canvasWidth / 2211),
-    //     (2.3 * this.playerLifeUIheight) / 5,
-    //     this.canvasWidth * 0.016,
-    //     (1.1 * this.playerLifeUIheight) / 5
-    //   );
-    //   pop();
-    // }
+    /*
 
     // attacker 죽었을때 부활까지 남은 시간 표시
     if (this.player1.isDead) {
@@ -312,7 +314,7 @@ class UI {
       // 죽은 시간 초기화해줌
       this.player1DeadTime = 0;
     }
-
+*/
     // defender 죽었을때 부활까지 남은 시간 표시
     if (this.player2.isDead) {
       if (this.player2DeadTime === 0) {
@@ -326,7 +328,7 @@ class UI {
       text(
         UI.playerRespawnComment +
           this.calculateRespawnLeftTime(this.player2DeadTime),
-        width - this.playerLifeUIOffset,
+        (width - this.playerLifeUIOffset) * 1.03, //위치조정
         this.playerLifeUIheight
       );
       pop();
@@ -334,7 +336,6 @@ class UI {
       this.player2DeadTime = 0;
     }
   }
-
   drawGameItemImage(itemImage) {
     let x = width / 2 - itemImage.width / 4;
     let y = height / 2 - itemImage.height / 4;
@@ -343,12 +344,11 @@ class UI {
 
     image(itemImage, x, y, smallerWidth, smallerHeight);
   }
-
   drawItemSlotImage(itemImage, isAttacker) {
     let x = isAttacker
       ? this.itemUIOffset
       : this.canvasWidth - this.itemUIOffset;
-    let y = this.itemUIheight; //위치조정
+    let y = this.itemUIheight * 0.9; //위치조정
 
     push();
     imageMode(CENTER);
@@ -366,11 +366,11 @@ class UI {
       ? this.itemTooltipUiOffset
       : this.canvasWidth - this.itemTooltipUiOffset;
     let textY = this.itemTooltipUiHeight;
-    text(`${itemType}획득!!`, textX * 0.98, textY); //위치조정
+    text(`${itemType}획득!!`, textX * 0.98, textY * 0.97); //위치조정
     pop();
   }
-
+  /*
   drawGameResultScreen(winnerImage) {
     image(winnerImage, 0, 0, this.canvasWidth, this.canvasHeight);
-  }
+  }*/
 }

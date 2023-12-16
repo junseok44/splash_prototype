@@ -65,7 +65,7 @@ function setup() {
     pg,
   });
 
-  system.changePhase(System.PHASE.TUTORIAL);
+  system.changePhase(System.PHASE.MAIN_GAME);
 
   itemManager = new ItemManager({ player1, player2 });
   ui = new UI({ player1, player2, width, height });
