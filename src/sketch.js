@@ -297,6 +297,7 @@ function draw() {
       if (!pgManager.isPgChanged) {
         pg = createGraphics(pgManager.size.width, pgManager.size.height);
         pg.noStroke();
+        console.log("pgManager.isPgChanged");
         pgManager.isPgChanged = true;
       }
 
