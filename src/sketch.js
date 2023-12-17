@@ -65,7 +65,7 @@ function setup() {
     pg,
   });
 
-  system.changePhase(System.PHASE.TUTORIAL);
+  system.changePhase(System.PHASE.MAIN_GAME);
 
   itemManager = new ItemManager({ player1, player2 });
   ui = new UI({ player1, player2, width, height });
@@ -379,14 +379,18 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === ENTER) {
-    tutorialManager.tutorialNext();
-  } else if (keyCode === BACKSPACE) {
-    tutorialManager.tutorialPrev();
+  if (system.phase == System.PHASE.TUTORIAL) {
+    if (keyCode === ENTER) {
+      tutorialManager.tutorialNext();
+    } else if (keyCode === BACKSPACE) {
+      tutorialManager.tutorialPrev();
+    }
   }
 
-  if (keyCode === 85) {
-    gm.startMainGame();
+  if (system.phase == System.PHASE.MAIN_GAME) {
+    if (keyCode === 85) {
+      gm.startMainGame();
+    }
   }
 }
 

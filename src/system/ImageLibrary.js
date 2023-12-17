@@ -5,6 +5,7 @@ class ImageLibrary {
     this.backgroundImage;
   }
 
+  static attackerImage;
   static BASE_DIR = "src/assets/image/";
 
   loadImages() {
@@ -17,6 +18,18 @@ class ImageLibrary {
       loadImage(ImageLibrary.BASE_DIR + "image11.png"), // 범위
       loadImage(ImageLibrary.BASE_DIR + "image12.png"), // 리버스
     ];
+
+    ImageLibrary.attackerImage = loadImage(
+      ImageLibrary.BASE_DIR + "공격 최종.png"
+    );
+
+    ImageLibrary.defenderImage = loadImage(
+      ImageLibrary.BASE_DIR + "수비 최종.png"
+    );
+
+    ImageLibrary.minimiImage = loadImage(
+      ImageLibrary.BASE_DIR + "수비 방패.png"
+    );
 
     this.tutorialImages = [
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/1게임 목적.png"),
@@ -38,15 +51,6 @@ class ImageLibrary {
     this.backgroundImage = loadImage(
       ImageLibrary.BASE_DIR + "Chess Map Basic.png"
     );
-
-    // for (let i = 1; i <= 5; i++) {
-    //   let photo = loadImage(BASE_DIR + `photo${i}.png`);
-    //   photos.push(photo);
-    // }
-    // for (let i = 1; i <= 2; i++) {
-    //   let pic = loadImage(BASE_DIR + `Pic${i}.png`);
-    //   choices.push(pic);
-    // }
   }
 
   getTutorialImage(index) {

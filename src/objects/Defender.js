@@ -68,6 +68,16 @@ class Defender extends Player {
     this.minimiInitialize();
   }
 
+  display() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.deg);
+    image(ImageLibrary.defenderImage, -this.width / 2, -this.height / 2);
+    pop();
+
+    super.display();
+  }
+
   //minimi  10개 생성
   minimiInitialize() {
     this.circles = [];
@@ -95,7 +105,14 @@ class Defender extends Player {
       this.minimiX[i] = this.minimiPosition * cos(circleAngle);
       this.minimiY[i] = this.minimiPosition * sin(circleAngle);
       this.minimiArray.push(this.minimiX[i], this.minimiY[i]);
-      circle(this.minimiX[i], this.minimiY[i], this.minimiSize);
+      // circle(this.minimiX[i], this.minimiY[i], this.minimiSize);
+      image(
+        ImageLibrary.minimiImage,
+        this.minimiX[i] - this.minimiSize / 2,
+        this.minimiY[i] - this.minimiSize / 2,
+        this.minimiSize,
+        this.minimiSize
+      );
       pop();
     }
   }
