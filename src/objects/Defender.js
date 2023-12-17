@@ -39,14 +39,14 @@ class Defender extends Player {
     if (keyIsDown(37) || keyIsDown(38) || keyIsDown(39) || keyIsDown(40)) {
       push();
 
-      let pg = this.pg;
       // throttling
       pg.push();
       pg.rectMode(pg.CENTER);
-      pg.translate(
-        this.x - (windowWidth * 11) / 100,
-        this.y - (windowHeight * 23) / 100
-      );
+
+      const pgManager = PgManager.getInstance();
+      const { x: pgX, y: pgY } = pgManager.initialPosition;
+      console.log(pgX, pgY);
+      pg.translate(this.x - pgX, this.y - pgY);
       pg.rotate(this.deg);
       pg.fill(255);
       //지우개 크기
