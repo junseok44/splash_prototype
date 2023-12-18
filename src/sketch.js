@@ -13,6 +13,9 @@ let tutorialManager;
 let gm;
 let imageLib = new ImageLibrary();
 
+let itemTutorialStartTime;
+let itemTutorialPhase = false;
+
 function preload() {
   imageLib.loadImages();
 }
@@ -65,7 +68,8 @@ function setup() {
     pg,
   });
 
-  system.changePhase(System.PHASE.MAIN_GAME);
+  system.changePhase(System.PHASE.TUTORIAL);
+  // system.changePhase(System.PHASE.MAIN_GAME);
 
   itemManager = new ItemManager({ player1, player2 });
   ui = new UI({ player1, player2, width, height });
@@ -103,6 +107,7 @@ function draw() {
         width,
         height
       );
+
       image(
         pg,
         ui.tutorialBoxNarrowOffset,
@@ -111,7 +116,10 @@ function draw() {
         ui.tutorialBoxHeight
       );
 
-      if (tutorialManager.tutorialIndex <= 2) {
+      if (
+        tutorialManager.tutorialIndex <= 2 &&
+        tutorialManager.tutorialIndex > 0
+      ) {
         player1.display();
         player1.move({
           left: ui.tutorialBoxNarrowOffset,
@@ -128,7 +136,10 @@ function draw() {
         }
       }
 
-      if (tutorialManager.tutorialIndex >= 3) {
+      if (
+        tutorialManager.tutorialIndex >= 3 &&
+        tutorialManager.tutorialIndex <= 4
+      ) {
         player2.display();
         player2.move({
           left: ui.tutorialBoxWideOffset,
@@ -140,6 +151,99 @@ function draw() {
 
         minimiInitializeOnce();
         player2.minimiDisplay();
+      }
+
+      //아이템 튜토리얼 파트
+      if (tutorialManager.tutorialIndex == 7) {
+        push();
+        translate(windowWidth / 6, 0);
+        player1.display();
+        pop();
+
+        push();
+        translate(-windowWidth / 6, 0);
+        player2.display();
+        minimiInitializeOnce();
+        player2.minimiDisplay();
+        pop();
+
+        //아이템 튜토리얼 phase에 들어온 후 3초 지난 후부터 카운트 다운 3초 후 아이템 획득 시뮬레이션 기능
+        itemTutorialPhase = true;
+        if (itemTutorialPhase) {
+          if (!itemTutorialStartTime) {
+            itemTutorialStartTime = millis();
+          }
+        }
+
+        let elapsedTime = millis() - itemTutorialStartTime;
+        //elapsedTime 확인용
+        //text(elapsedTime, windowWidth/2, windowHeight/3);
+
+        push();
+        textAlign(CENTER, CENTER);
+        textSize(50);
+        if (elapsedTime >= 3000 && elapsedTime < 4000) {
+          text("아이템 등장까지 3초", windowWidth / 2, windowHeight / 2);
+        }
+        if (elapsedTime >= 4000 && elapsedTime < 5000) {
+          text("아이템 등장까지 2초", windowWidth / 2, windowHeight / 2);
+        }
+        if (elapsedTime >= 5000 && elapsedTime < 6000) {
+          text("아이템 등장까지 1초", windowWidth / 2, windowHeight / 2);
+        }
+        if (elapsedTime >= 6000 && elapsedTime < 6100) {
+          gm.isDisplayRandomItemImage = true;
+        }
+        pop();
+
+        if (gm.isDisplayRandomItemImage) {
+          ui.drawGameItemImage(imageLib.randomItemImage);
+
+          if (keyCode === player1.itemCode || keyCode === player2.itemCode) {
+            gm.setCurrentItemStatus(keyCode, imageLib, itemManager);
+
+            itemManager.activateItemEffect({
+              itemEater: gm.currentItemEater,
+              itemType: gm.currentItemType,
+            });
+          }
+        }
+
+        // 아이템을 누가 먹었을때, 아이템 이미지와 툴팁을 표시.
+        if (gm.isDisplayItemImage) {
+          push();
+          translate(windowWidth / 2, windowHeight / 2);
+          textAlign(CENTER, CENTER);
+          textSize(20);
+          // let itemName;
+          // if (gm.currentItemType == speed_up) {
+          //   itemName = '속도';
+          // } else if (gm.currentItemType == range_up) {
+          //   itemName = '강화';
+          // } else {
+          //   itemName = '방향';
+          // }
+          if (gm.currentItemEater == player1) {
+            text(
+              "공격자가 " + gm.currentItemType + " 아이템을 획득했습니다!",
+              0,
+              0
+            );
+          }
+          if (gm.currentItemEater == player2) {
+            text(
+              "수비자가 " + gm.currentItemType + " 아이템을 획득했습니다!",
+              0,
+              0
+            );
+          }
+          pop();
+        }
+      }
+
+      if (tutorialManager.tutorialIndex != 7) {
+        itemTutorialPhase = false;
+        itemTutorialStartTime = null;
       }
 
       break;
@@ -169,7 +273,12 @@ function draw() {
       }
 
       // 메인 게임 ui
-      ui.drawMainGameScreen(gm.inkAreaRatio, gm.countdown);
+      ui.drawMainGameScreen(
+        gm.inkAreaRatio,
+        gm.countdown,
+        gm.isReady,
+        gm.isReadyEnd
+      );
 
       // // pg 레이어 절반 채우고 색 확인
       // push();
@@ -181,6 +290,11 @@ function draw() {
       // 플레이어1, 플레이어2 그리기
       player1.display();
       player2.display();
+
+      //minimi 보이기
+      player2.minimiDisplay();
+
+      if (!gm.isReady) return;
 
       // 죽지 않았을때만 움직이고 공격가능.
       if (!player1.isDead) {
@@ -202,9 +316,6 @@ function draw() {
         });
         player2.attack();
       }
-
-      //minimi 보이기
-      player2.minimiDisplay();
 
       // 미니미와 공격자 충돌 계산.
       for (let i = 0; i < player2.minimiX.length; i++) {
@@ -368,14 +479,18 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === ENTER) {
-    tutorialManager.tutorialNext();
-  } else if (keyCode === BACKSPACE) {
-    tutorialManager.tutorialPrev();
+  if (system.phase === System.PHASE.TUTORIAL) {
+    if (keyCode === ENTER) {
+      tutorialManager.tutorialNext();
+    } else if (keyCode === BACKSPACE) {
+      tutorialManager.tutorialPrev();
+    }
   }
 
-  if (keyCode === 85) {
-    gm.startMainGame();
+  if (system.phase === System.PHASE.MAIN_GAME) {
+    if (keyCode === 85) {
+      gm.startMainGame();
+    }
   }
 }
 
