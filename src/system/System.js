@@ -22,6 +22,7 @@ class System {
         break;
       case System.PHASE.SELECT_CHARACTER:
         this.phase = System.PHASE.SELECT_CHARACTER;
+        introVideo.play();
         break;
       case System.PHASE.TUTORIAL:
         this.phase = System.PHASE.TUTORIAL;

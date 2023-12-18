@@ -7,6 +7,7 @@ class ImageLibrary {
 
   static attackerImage;
   static BASE_DIR = "src/assets/image/";
+  static BASE_VIDEO_DIR = "src/assets/video/";
 
   loadImages() {
     this.randomItemImage = loadImage(ImageLibrary.BASE_DIR + "item.png");

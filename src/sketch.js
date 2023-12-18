@@ -1,6 +1,6 @@
 let xPosition = 0;
 let yPosition = 0;
-
+let introVideo;
 let player1;
 let player2;
 let bullets = [];
@@ -22,6 +22,8 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  introVideo = createVideo("src/assets/video/intro.mp4");
 
   pgManager = PgManager.getInstance();
 
@@ -70,7 +72,8 @@ function setup() {
     pg,
   });
 
-  system.changePhase(System.PHASE.TUTORIAL);
+  system.changePhase(System.PHASE.INTRO);
+  // system.changePhase(System.PHASE.TUTORIAL);
   // system.changePhase(System.PHASE.MAIN_GAME);
 
   itemManager = new ItemManager({ player1, player2 });
@@ -110,10 +113,22 @@ const setItemTutorialStartTimeOnce = callOneTime(() => {
 function draw() {
   switch (system.phase) {
     case System.PHASE.INTRO:
+      console.log("intro");
+      push();
+      textSize(30);
+      textAlign(CENTER);
+      text("Press Enter to Start", windowWidth / 2, windowHeight / 2);
+      pop();
+
       break;
     case System.PHASE.SELECT_CHARACTER:
+      console.log("select character");
+
+      image(introVideo, 0, 0, width, height);
       break;
     case System.PHASE.TUTORIAL:
+      console.log("tutorail");
+
       image(
         imageLib.getTutorialImage(tutorialManager.tutorialIndex),
         0,
@@ -630,7 +645,25 @@ function draw() {
   }
 }
 
+let isTurning = false;
+
 function keyPressed() {
+  if (system.phase == System.PHASE.INTRO) {
+    if (keyCode === ENTER) {
+      system.changePhase(System.PHASE.SELECT_CHARACTER);
+      isTurning = true;
+      setTimeout(() => {
+        isTurning = false;
+      }, 1000);
+    }
+  }
+
+  if (system.phase == System.PHASE.SELECT_CHARACTER) {
+    if (keyCode === ENTER && !isTurning) {
+      system.changePhase(System.PHASE.TUTORIAL);
+    }
+  }
+
   if (system.phase == System.PHASE.TUTORIAL) {
     if (keyCode === ENTER) {
       tutorialManager.tutorialNext();
