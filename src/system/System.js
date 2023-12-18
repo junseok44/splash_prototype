@@ -26,7 +26,7 @@ class System {
         break;
       case System.PHASE.TUTORIAL:
         this.phase = System.PHASE.TUTORIAL;
-
+        tutorialManager.tutorialIndex = 0;
         break;
       case System.PHASE.MAIN_GAME:
         this.phase = System.PHASE.MAIN_GAME;

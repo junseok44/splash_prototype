@@ -127,7 +127,7 @@ function draw() {
       image(introVideo, 0, 0, width, height);
       break;
     case System.PHASE.TUTORIAL:
-      console.log("tutorail");
+      console.log(tutorialManager.tutorialIndex);
 
       image(
         imageLib.getTutorialImage(tutorialManager.tutorialIndex),
@@ -661,11 +661,15 @@ function keyPressed() {
   if (system.phase == System.PHASE.SELECT_CHARACTER) {
     if (keyCode === ENTER && !isTurning) {
       system.changePhase(System.PHASE.TUTORIAL);
+      isTurning = true;
+      setTimeout(() => {
+        isTurning = false;
+      }, 1000);
     }
   }
 
   if (system.phase == System.PHASE.TUTORIAL) {
-    if (keyCode === ENTER) {
+    if (keyCode === ENTER && !isTurning) {
       tutorialManager.tutorialNext();
       pgManager.isPgChanged = false;
     } else if (keyCode === BACKSPACE) {
