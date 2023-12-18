@@ -24,7 +24,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   introVideo = createVideo("src/assets/video/intro.mp4");
-
+  introVideo.hide();
   pgManager = PgManager.getInstance();
 
   pg = createGraphics(pgManager.size.width, pgManager.size.height);
@@ -661,6 +661,7 @@ function keyPressed() {
   if (system.phase == System.PHASE.SELECT_CHARACTER) {
     if (keyCode === ENTER && !isTurning) {
       system.changePhase(System.PHASE.TUTORIAL);
+      introVideo.stop();
       isTurning = true;
       setTimeout(() => {
         isTurning = false;
