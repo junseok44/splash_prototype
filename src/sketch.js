@@ -9,7 +9,7 @@ let itemManager;
 let ui;
 let ink;
 let tutorialManager;
-
+let pgManager;
 let gm;
 let imageLib = new ImageLibrary();
 
@@ -23,7 +23,9 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  pg = createGraphics((windowWidth * 78) / 100, (windowHeight * 74) / 100);
+  pgManager = PgManager.getInstance();
+
+  pg = createGraphics(pgManager.size.width, pgManager.size.height);
   pg.noStroke();
 
   player1 = new Attacker({
@@ -59,7 +61,7 @@ function setup() {
     pg: pg,
   });
   gm = new GameManager({ player1, player2, pg, bullets });
-  system = new System({ pg, gm });
+  system = new System({ pg, gm, pgManager });
   tutorialManager = new TutorialManager({
     player1,
     player2,
@@ -93,6 +95,18 @@ const minimiInitializeOnce = callOneTime(() => {
   console.log("minimiInitializeOnce");
 });
 
+const setItemTutorialStartTimeOnce = callOneTime(() => {
+  player1.setInitialPosition({
+    x: ui.canvasWidth / 2 - 100,
+    y: ui.canvasHeight / 2 + 200,
+  });
+
+  player2.setInitialPosition({
+    x: ui.canvasWidth / 2 + 100,
+    y: ui.canvasHeight / 2 + 200,
+  });
+});
+
 function draw() {
   switch (system.phase) {
     case System.PHASE.INTRO:
@@ -108,18 +122,33 @@ function draw() {
         height
       );
 
-      image(
-        pg,
-        ui.tutorialBoxNarrowOffset,
-        ui.tutorialBoxTopOffset,
-        ui.tutorialBoxWidth,
-        ui.tutorialBoxHeight
-      );
-
       if (
         tutorialManager.tutorialIndex <= 2 &&
         tutorialManager.tutorialIndex > 0
       ) {
+        pgManager.changePgPosition(
+          {
+            x: ui.tutorialBoxNarrowOffset,
+            y: ui.tutorialBoxTopOffset,
+          },
+          ui.tutorialBoxWidth,
+          ui.tutorialBoxHeight
+        );
+
+        if (!pgManager.isPgChanged) {
+          pg = createGraphics(pgManager.size.width, pgManager.size.height);
+          pg.noStroke();
+          pgManager.isPgChanged = true;
+        }
+
+        image(
+          pg,
+          pgManager.initialPosition.x,
+          pgManager.initialPosition.y,
+          pgManager.size.width,
+          pgManager.size.height
+        );
+
         player1.display();
         player1.move({
           left: ui.tutorialBoxNarrowOffset,
@@ -129,17 +158,84 @@ function draw() {
         });
       }
 
-      if (tutorialManager.tutorialIndex == 2) {
+      if (
+        tutorialManager.tutorialIndex <= 2 &&
+        tutorialManager.tutorialIndex >= 1
+      ) {
         player1.attack();
+
         for (let i = 0; i < bullets.length; i++) {
           bullets[i].display();
         }
       }
 
+      if (tutorialManager.tutorialIndex == 2) {
+        player2.display();
+        player2.minimiDisplay();
+
+        push();
+        textAlign(CENTER);
+        textSize(20);
+
+        text(
+          "잉크총으로 수비를 공격해보세요!",
+          ui.tutorialBoxNarrowOffset + ui.tutorialBoxWidth / 2,
+          windowHeight - ui.tutorialBoxBottomOffset
+        );
+        pop();
+
+        //minimi와 bullet, bullet과 수비의 충돌 계산.
+        for (let i = 0; i < bullets.length; i++) {
+          bullets[i].display();
+
+          player2.minimiCollide(bullets[i]);
+
+          if (bullets[i].isEnd && bullets[i].isEndDrawing) {
+            // 총알이 끝까지 가서 잉크가 퍼졌을때.
+            bullets.splice(i, 1);
+          } else {
+            if (!player2.isDead && player2.isCollidedWithCircle(bullets[i])) {
+              // 총알이 플레이어에 맞았을때.
+              bullets.splice(i, 1);
+              player2.hit();
+              if (player2.life == 0) {
+                player2.dead();
+              }
+            }
+          }
+        }
+      }
+
       if (
         tutorialManager.tutorialIndex >= 3 &&
-        tutorialManager.tutorialIndex <= 4
+        tutorialManager.tutorialIndex < 4
       ) {
+        console.log(
+          "tutorialManager.tutorialIndex >= 3 && tutorialManager.tutorialIndex < 4"
+        );
+        pgManager.changePgPosition(
+          {
+            x: ui.tutorialBoxWideOffset,
+            y: ui.tutorialBoxTopOffset,
+          },
+          ui.tutorialBoxWidth,
+          ui.tutorialBoxHeight
+        );
+
+        if (!pgManager.isPgChanged) {
+          pg = createGraphics(pgManager.size.width, pgManager.size.height);
+          pg.noStroke();
+          pgManager.isPgChanged = true;
+        }
+
+        image(
+          pg,
+          pgManager.initialPosition.x,
+          pgManager.initialPosition.y,
+          pgManager.size.width,
+          pgManager.size.height
+        );
+
         player2.display();
         player2.move({
           left: ui.tutorialBoxWideOffset,
@@ -155,6 +251,8 @@ function draw() {
 
       //아이템 튜토리얼 파트
       if (tutorialManager.tutorialIndex == 7) {
+        setItemTutorialStartTimeOnce();
+
         push();
         translate(windowWidth / 6, 0);
         player1.display();
@@ -239,22 +337,76 @@ function draw() {
           }
           pop();
         }
-      }
-
-      if (tutorialManager.tutorialIndex != 7) {
+      } else {
         itemTutorialPhase = false;
         itemTutorialStartTime = null;
+      }
+
+      if (tutorialManager.tutorialIndex == 4) {
+        player2.display();
+        player2.minimiDisplay();
+
+        push();
+        textAlign(CENTER);
+        textSize(20);
+
+        text(
+          "수비를 이동시켜서 공격측을 공격해보세요!",
+          ui.tutorialBoxWideOffset + ui.tutorialBoxWidth / 2,
+          ui.tutorialBoxTopOffset + 100
+        );
+        pop();
+        player2.move({
+          left: ui.tutorialBoxWideOffset,
+          right: ui.tutorialBoxNarrowOffset,
+          top: ui.tutorialBoxTopOffset,
+          bottom: ui.tutorialBoxBottomOffset,
+        });
+        player1.display();
+
+        // 미니미와 공격자 충돌 계산.
+        for (let i = 0; i < player2.minimiX.length; i++) {
+          if (
+            player1.isCollidedWithCircle({
+              coordX: player2.x + player2.minimiX[i],
+              coordY: player2.y + player2.minimiY[i],
+              width: player2.minimiSize,
+            })
+          ) {
+            player1.hit();
+            if (player1.life == 0) {
+              player1.dead();
+            }
+          }
+        }
       }
 
       break;
     case System.PHASE.MAIN_GAME:
       image(imageLib.backgroundImage, 0, 0, width, height);
+
+      pgManager.changePgPosition(
+        {
+          x: (windowWidth * 11) / 100,
+          y: (windowHeight * 23) / 100,
+        },
+        (windowWidth * 78) / 100,
+        (windowHeight * 74) / 100
+      );
+
+      if (!pgManager.isPgChanged) {
+        pg = createGraphics(pgManager.size.width, pgManager.size.height);
+        pg.noStroke();
+        console.log("pgManager.isPgChanged");
+        pgManager.isPgChanged = true;
+      }
+
       image(
         pg,
-        (windowWidth * 11) / 100,
-        (windowHeight * 23) / 100,
-        pg.width,
-        pg.height
+        pgManager.initialPosition.x,
+        pgManager.initialPosition.y,
+        pgManager.size.width,
+        pgManager.size.height
       );
 
       // 게임 끝났을때의 ui
@@ -333,7 +485,7 @@ function draw() {
         }
       }
 
-      //minimi와 bullet의 충돌 계산.
+      //minimi와 bullet, bullet과 수비의 충돌 계산.
       for (let i = 0; i < bullets.length; i++) {
         bullets[i].display();
 
@@ -479,19 +631,19 @@ function draw() {
 }
 
 function keyPressed() {
-  if (system.phase === System.PHASE.TUTORIAL) {
+  if (system.phase == System.PHASE.TUTORIAL) {
     if (keyCode === ENTER) {
       tutorialManager.tutorialNext();
+      pgManager.isPgChanged = false;
     } else if (keyCode === BACKSPACE) {
       tutorialManager.tutorialPrev();
+      pgManager.isPgChanged = false;
     }
   }
 
-  if (system.phase === System.PHASE.MAIN_GAME) {
+  if (system.phase == System.PHASE.MAIN_GAME) {
     if (keyCode === 85) {
-      gm.startMainGame();
+      // TODO: 게임 다시하가ㅣ.
     }
   }
 }
-
-// TODO:  -- 키를 눌러 먹으세요!!

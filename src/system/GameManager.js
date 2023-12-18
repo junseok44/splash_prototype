@@ -20,12 +20,20 @@ class GameManager {
     this._randomItemDisplayTimer = null;
     this._calculateInkAreaRatioTimer = null;
     this._countdownTimer = null;
+
+    this.centeredCountDown = 3;
+
+    this.isReady = false;
+    this.isReadyEnd = false;
   }
 
   static gameCountDownSec = 120;
-  static randomItemDisplayInterval = 5000;
+  static lastSeconds = 5;
+  static randomItemDisplayInterval = 8000;
   static randomItemDisplayDuration = 5000;
   static calculateInkAreaRatioInterval = 5000;
+
+  static lastSeconds = 5;
 
   static isColorMatch(r1, g1, b1, a1, r2, g2, b2, a2, threshold) {
     return (
@@ -72,12 +80,31 @@ class GameManager {
     player2.initialize();
   }
 
+  startMainGameCountdown() {
+    this.countdown = 3;
+
+    let timer = setInterval(() => {
+      this.timeLapse();
+    }, 1000);
+
+    setTimeout(() => {
+      clearInterval(timer);
+      this.startMainGame();
+    }, 3000);
+  }
+
   startMainGame() {
+    this.isReady = true;
+
     this.initializeMainGame();
 
     this._randomItemDisplayTimer = setInterval(() => {
       this.showRandomItemImage();
     }, GameManager.randomItemDisplayInterval);
+
+    setTimeout(() => {
+      this.isReadyEnd = true;
+    }, (GameManager.gameCountDownSec - GameManager.lastSeconds) * 1000);
 
     this._calculateInkAreaRatioTimer = setInterval(() => {
       this.calculateInkAreaRatio();
@@ -91,10 +118,6 @@ class GameManager {
   }
 
   calculateInkAreaRatio() {
-    console.log("calculateInkAreaRatio");
-
-    let pg = this.pg;
-
     pg.loadPixels();
 
     let totalPixels = pg.pixels.length / 4;
@@ -118,6 +141,7 @@ class GameManager {
 
     // inkAreaRatio를 0 미만으로 되지 않도록 조정
     this.inkAreaRatio = max(min((inkedPixels / totalPixels) * 100, 100), 0);
+    console.log(this.inkAreaRatio);
   }
 
   showRandomItemImage() {

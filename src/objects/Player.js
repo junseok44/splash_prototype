@@ -66,6 +66,9 @@ class Player {
   }
 
   setInitialPosition({ x, y }) {
+    // FIXME 임시로 넣음
+    this.initialize();
+
     this.initialX = x;
     this.initialY = y;
     this.x = x;
@@ -375,8 +378,8 @@ class Player {
       ); // when hit
       pop();
     } else {
-      rect(0, 0, this.width, this.height);
-      ellipse(0, -20, 10, 10);
+      // rect(0, 0, this.width, this.height);
+      // ellipse(0, -20, 10, 10);
     }
 
     fill(0);

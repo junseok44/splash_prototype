@@ -16,9 +16,9 @@ class Attacker extends Player {
     if (!this.isAttacked) {
       let correction = random(-0.3, 0.3);
 
-      bullets.push(
-        new Bullet(this.x, this.y, this.deg + correction, this.color)
-      );
+      let direction = PI / 2 + this.deg + correction;
+
+      bullets.push(new Bullet(this.x, this.y, direction, this.color));
       this.isAttacked = true;
       setTimeout(() => {
         this.isAttacked = false;
@@ -26,5 +26,15 @@ class Attacker extends Player {
     }
 
     pop();
+  }
+
+  display() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.deg);
+    image(ImageLibrary.attackerImage, -this.width / 2, -this.height / 2);
+    pop();
+
+    super.display();
   }
 }
