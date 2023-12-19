@@ -11,6 +11,7 @@ class System {
     TUTORIAL: "tutorial",
     MAIN_GAME: "main_game",
     GAME_RESULT: "game_result",
+    CREDITS: "credits",
   };
 
   static frameRate = 60;
@@ -34,6 +35,9 @@ class System {
         break;
       case System.PHASE.GAME_RESULT:
         this.phase = System.PHASE.GAME_RESULT;
+        break;
+      case System.PHASE.CREDITS:
+        this.phase = System.PHASE.CREDITS;
         break;
     }
   }

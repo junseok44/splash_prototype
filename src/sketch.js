@@ -113,12 +113,7 @@ const setItemTutorialStartTimeOnce = callOneTime(() => {
 function draw() {
   switch (system.phase) {
     case System.PHASE.INTRO:
-      console.log("intro");
-      push();
-      textSize(30);
-      textAlign(CENTER);
-      text("Press Enter to Start", windowWidth / 2, windowHeight / 2);
-      pop();
+      image(imageLib.introImage, 0, 0, width, height);
 
       break;
     case System.PHASE.SELECT_CHARACTER:
@@ -642,6 +637,9 @@ function draw() {
       break;
     case System.PHASE.GAME_RESULT:
       break;
+    case System.PHASE.CREDITS:
+      image(imageLib.creditsImage, 0, 0, width, height);
+      break;
   }
 }
 
@@ -655,6 +653,15 @@ function keyPressed() {
       setTimeout(() => {
         isTurning = false;
       }, 1000);
+    } else if (keyCode === 67) {
+      console.log("credits");
+      system.changePhase(System.PHASE.CREDITS);
+    }
+  }
+
+  if (system.phase == System.PHASE.CREDITS) {
+    if (keyCode === BACKSPACE) {
+      system.changePhase(System.PHASE.INTRO);
     }
   }
 

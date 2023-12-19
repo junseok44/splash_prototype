@@ -14,6 +14,9 @@ class ImageLibrary {
 
     this.tutorialImages = [];
 
+    this.introImage = loadImage(ImageLibrary.BASE_DIR + "0타이틀.png");
+    this.creditsImage = loadImage(ImageLibrary.BASE_DIR + "Credits.png");
+
     this.itemImages = [
       loadImage(ImageLibrary.BASE_DIR + "image10.png"), // 속도
       loadImage(ImageLibrary.BASE_DIR + "image11.png"), // 범위
