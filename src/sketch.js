@@ -89,6 +89,7 @@ function setup() {
   });
 
   system.changePhase(System.PHASE.INTRO);
+  // system.changePhase(System.PHASE.MAIN_GAME);
   // system.changePhase(System.PHASE.TUTORIAL);
   // system.changePhase(System.PHASE.MAIN_GAME);
 
@@ -676,7 +677,7 @@ function keyPressed() {
       isTurning = true;
       setTimeout(() => {
         isTurning = false;
-      }, 1000);
+      }, 500);
     } else if (keyCode === 67) {
       console.log("credits");
       system.changePhase(System.PHASE.CREDITS);
@@ -696,7 +697,7 @@ function keyPressed() {
       isTurning = true;
       setTimeout(() => {
         isTurning = false;
-      }, 1000);
+      }, 500);
     }
   }
 
@@ -715,4 +716,10 @@ function keyPressed() {
       // TODO: 게임 다시하가ㅣ.
     }
   }
+
+  // if (system.phase == System.PHASE.MAIN_GAME && gm.isEndGame) {
+  //   if (keyCode === ENTER) {
+  //     system.changePhase(System.PHASE.MAIN_GAME);
+  //   }
+  // }
 }
