@@ -66,6 +66,9 @@ class Player {
   }
 
   setInitialPosition({ x, y }) {
+    // FIXME 임시로 넣음
+    this.initialize();
+
     this.initialX = x;
     this.initialY = y;
     this.x = x;

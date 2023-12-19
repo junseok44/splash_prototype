@@ -11,6 +11,7 @@ class System {
     TUTORIAL: "tutorial",
     MAIN_GAME: "main_game",
     GAME_RESULT: "game_result",
+    CREDITS: "credits",
   };
 
   static frameRate = 60;
@@ -22,9 +23,11 @@ class System {
         break;
       case System.PHASE.SELECT_CHARACTER:
         this.phase = System.PHASE.SELECT_CHARACTER;
+        introVideo.play();
         break;
       case System.PHASE.TUTORIAL:
         this.phase = System.PHASE.TUTORIAL;
+        tutorialManager.tutorialIndex = 0;
         break;
       case System.PHASE.MAIN_GAME:
         this.phase = System.PHASE.MAIN_GAME;
@@ -35,6 +38,9 @@ class System {
         maingameSound.stop();
         this.phase = System.PHASE.GAME_RESULT;
         finalSound.play();
+        break;
+      case System.PHASE.CREDITS:
+        this.phase = System.PHASE.CREDITS;
         break;
     }
   }

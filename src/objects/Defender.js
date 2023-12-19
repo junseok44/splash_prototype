@@ -39,14 +39,13 @@ class Defender extends Player {
     if (keyIsDown(37) || keyIsDown(38) || keyIsDown(39) || keyIsDown(40)) {
       push();
 
-      let pg = this.pg;
       // throttling
       pg.push();
       pg.rectMode(pg.CENTER);
-      pg.translate(
-        this.x - (windowWidth * 11) / 100,
-        this.y - (windowHeight * 23) / 100
-      );
+
+      const pgManager = PgManager.getInstance();
+      const { x: pgX, y: pgY } = pgManager.initialPosition;
+      pg.translate(this.x - pgX, this.y - pgY);
       pg.rotate(this.deg);
       pg.fill(255);
       //지우개 크기
@@ -66,6 +65,16 @@ class Defender extends Player {
   respawn() {
     super.respawn();
     this.minimiInitialize();
+  }
+
+  display() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.deg);
+    image(ImageLibrary.defenderImage, -this.width / 2, -this.height / 2);
+    pop();
+
+    super.display();
   }
 
   //minimi  10개 생성
@@ -95,7 +104,14 @@ class Defender extends Player {
       this.minimiX[i] = this.minimiPosition * cos(circleAngle);
       this.minimiY[i] = this.minimiPosition * sin(circleAngle);
       this.minimiArray.push(this.minimiX[i], this.minimiY[i]);
-      circle(this.minimiX[i], this.minimiY[i], this.minimiSize);
+      // circle(this.minimiX[i], this.minimiY[i], this.minimiSize);
+      image(
+        ImageLibrary.minimiImage,
+        this.minimiX[i] - this.minimiSize / 2,
+        this.minimiY[i] - this.minimiSize / 2,
+        this.minimiSize,
+        this.minimiSize
+      );
       pop();
     }
   }

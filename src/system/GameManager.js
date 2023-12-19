@@ -118,10 +118,6 @@ class GameManager {
   }
 
   calculateInkAreaRatio() {
-    console.log("calculateInkAreaRatio");
-
-    let pg = this.pg;
-
     pg.loadPixels();
 
     let totalPixels = pg.pixels.length / 4;
@@ -145,6 +141,7 @@ class GameManager {
 
     // inkAreaRatio를 0 미만으로 되지 않도록 조정
     this.inkAreaRatio = max(min((inkedPixels / totalPixels) * 100, 100), 0);
+    console.log(this.inkAreaRatio);
   }
 
   showRandomItemImage() {
