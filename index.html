@@ -40,5 +40,17 @@
     <script src="src/system/PgManager.js"></script>
     <script src="src/utils/callOneTime.js"></script>
     <script src="src/sketch.js"></script>
+    <script>
+      window.addEventListener("keydown", function (e) {
+        // Check if the pressed key is an arrow key
+        if (
+          ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
+        ) {
+          // Prevent the default behavior for arrow keys
+          e.preventDefault();
+          return false;
+        }
+      });
+    </script>
   </body>
 </html>
