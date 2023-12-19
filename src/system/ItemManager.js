@@ -6,7 +6,7 @@ class ItemManager {
     this.player2 = player2;
   }
 
-  static itemEffectTime = 3000;
+  static itemEffectTime = 5000;
   static defenderRangeUpValue = 100;
   static attackerRangeUpValue = 100;
 
@@ -28,12 +28,15 @@ class ItemManager {
     switch (itemType) {
       case ItemManager.itemTypes.SPEED_UP:
         this.applySpeedEffect(itemEater);
+        fasterSound.play();
         break;
       case ItemManager.itemTypes.REVERSE:
         this.applyReverseEffect(itemEater);
+        reverseSound.play();
         break;
       case ItemManager.itemTypes.RANGE_UP:
         this.applyRangeUpEffect(itemEater);
+        enlargeSound.play();
         break;
     }
   }

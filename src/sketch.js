@@ -16,11 +16,27 @@ let imageLib = new ImageLibrary();
 let itemTutorialStartTime;
 let itemTutorialPhase = false;
 
+let playWhistle = false;
+let playBomb = false;
+let playComeback = false;
+let playEnlarge = false;
+
 function preload() {
   imageLib.loadImages();
+  whistleSound = loadSound("src/assets/sounds/whistle.mp3");
+  maingameSound = loadSound("src/assets/sounds/mainGame.mp3");
+  bombSound = loadSound("src/assets/sounds/bomb.mp3");
+  enlargeSound = loadSound("src/assets/sounds/enlarge.mp3");
+  fasterSound = loadSound("src/assets/sounds/faster.mp3");
+  finalSound = loadSound("src/assets/sounds/final.mp3");
+  hitSound = loadSound("src/assets/sounds/hit.mp3");
+  itemSound = loadSound("src/assets/sounds/item.mp3");
+  minimiHitSound = loadSound("src/assets/sounds/minimiHit.mp3");
+  reverseSound = loadSound("src/assets/sounds/reverse.mp3");
 }
 
 function setup() {
+  maingameSound.setVolume(0.5);
   createCanvas(windowWidth, windowHeight);
 
   pg = createGraphics((windowWidth * 78) / 100, (windowHeight * 74) / 100);
@@ -245,9 +261,17 @@ function draw() {
         itemTutorialPhase = false;
         itemTutorialStartTime = null;
       }
+      playWhistle = true;
 
       break;
+
     case System.PHASE.MAIN_GAME:
+      if (playWhistle) {
+        whistleSound.play();
+        playWhistle = false;
+      }
+
+      //maingameSound.play();
       image(imageLib.backgroundImage, 0, 0, width, height);
       image(
         pg,

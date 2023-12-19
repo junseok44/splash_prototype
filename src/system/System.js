@@ -28,10 +28,13 @@ class System {
         break;
       case System.PHASE.MAIN_GAME:
         this.phase = System.PHASE.MAIN_GAME;
-        this.gameManager.startMainGame();
+        this.gameManager.startMainGameCountdown();
+        maingameSound.play();
         break;
       case System.PHASE.GAME_RESULT:
+        maingameSound.stop();
         this.phase = System.PHASE.GAME_RESULT;
+        finalSound.play();
         break;
     }
   }
