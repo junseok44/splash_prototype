@@ -719,10 +719,14 @@ function keyPressed() {
 
   // 게임 끝났을때 다시
   if (system.phase == System.PHASE.MAIN_GAME && gm.isEndGame) {
-    if (keyCode === ENTER) {
+    if (keyCode === 82) {
       maingameSound.stop();
       finalSound.stop();
       system.changePhase(System.PHASE.MAIN_GAME);
+    } else if (keyCode === 72) {
+      maingameSound.stop();
+      finalSound.stop();
+      system.changePhase(System.PHASE.INTRO);
     }
   }
 }
