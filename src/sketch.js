@@ -18,6 +18,9 @@ let imageLib = new ImageLibrary();
 let itemTutorialStartTime;
 let itemTutorialPhase = false;
 
+let isTutorialSoundPlaying = false;
+let tutorialSound;
+
 let playWhistle = false;
 let playBomb = false;
 let playComeback = false;
@@ -25,6 +28,7 @@ let playEnlarge = false;
 
 function preload() {
   imageLib.loadImages();
+  tutorialSound = loadSound("src/assets/sounds/tutorial.mp3");
   whistleSound = loadSound("src/assets/sounds/whistle.mp3");
   maingameSound = loadSound("src/assets/sounds/mainGame.mp3");
   bombSound = loadSound("src/assets/sounds/bomb.mp3");
@@ -143,6 +147,11 @@ function draw() {
 
       break;
     case System.PHASE.TUTORIAL:
+      if (!tutorialSound.isPlaying()) {
+        tutorialSound.play();
+        isTutorialSoundPlaying = true;
+      }
+
       image(
         imageLib.getTutorialImage(tutorialManager.tutorialIndex),
         0,
@@ -414,6 +423,10 @@ function draw() {
       break;
 
     case System.PHASE.MAIN_GAME:
+      if (tutorialSound.isPlaying()) {
+        tutorialSound.stop();
+      }
+
       image(imageLib.backgroundImage, 0, 0, width, height);
 
       pgManager.changePgPosition(

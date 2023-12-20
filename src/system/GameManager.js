@@ -27,7 +27,7 @@ class GameManager {
     this.isReadyEnd = false;
   }
 
-  static gameCountDownSec = 100;
+  static gameCountDownSec = 5;
   static lastSeconds = 5;
   static randomItemDisplayInterval = 12000;
   static randomItemDisplayDuration = 5000;
