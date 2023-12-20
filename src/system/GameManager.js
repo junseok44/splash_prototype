@@ -27,7 +27,7 @@ class GameManager {
     this.isReadyEnd = false;
   }
 
-  static gameCountDownSec = 120;
+  static gameCountDownSec = 100;
   static lastSeconds = 5;
   static randomItemDisplayInterval = 12000;
   static randomItemDisplayDuration = 5000;
@@ -62,14 +62,24 @@ class GameManager {
 
   initializeMainGame() {
     this.resetItem();
+    this.resetTimer();
+
     this.countdown = GameManager.gameCountDownSec;
     this.inkAreaRatio = 0;
     this.isDisplayRandomItemImage = false;
+    this.isReadyEnd = false;
+    this.isReady = false;
+
     bullets = [];
 
     pg.clear();
     pg.fill(255);
 
+    player1.initialize();
+    player2.initialize();
+  }
+
+  resetTimer() {
     if (this._randomItemDisplayTimer)
       clearInterval(this._randomItemDisplayTimer);
     if (this._calculateInkAreaRatioTimer)
@@ -77,14 +87,13 @@ class GameManager {
     if (this._countdownTimer) clearInterval(this._countdownTimer);
     if (this._startCountdownTimer) clearInterval(this._startCountdownTimer);
     if (this._startMainGameTimer) clearInterval(this._startMainGameTimer);
-    player1.initialize();
-    player2.initialize();
+    if (this._readyEndTimer) clearInterval(this._readyEndTimer);
+    if (this._gameOverTimer) clearInterval(this._gameOverTimer);
   }
 
   startMainGameCountdown() {
     this.initializeMainGame();
 
-    this.isReady = false;
     this.countdown = 3;
 
     this._startCountdownTimer = setInterval(() => {
@@ -101,11 +110,17 @@ class GameManager {
     this.isReady = true;
     this.countdown = GameManager.gameCountDownSec;
 
+    this._gameOverTimer = setTimeout(() => {
+      console.log("reset game");
+      console.log(GameManager.gameCountDownSec);
+      this.resetTimer();
+    }, (GameManager.gameCountDownSec + 1) * 1000);
+
     this._randomItemDisplayTimer = setInterval(() => {
       this.showRandomItemImage();
     }, GameManager.randomItemDisplayInterval);
 
-    setTimeout(() => {
+    this._readyEndTimer = setTimeout(() => {
       this.isReadyEnd = true;
     }, (GameManager.gameCountDownSec - GameManager.lastSeconds) * 1000);
 
