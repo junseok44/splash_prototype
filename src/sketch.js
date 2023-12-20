@@ -137,10 +137,10 @@ function draw() {
       console.log("select character");
 
       image(introVideo, 0, 0, width, height);
+      image(imageLib.pressEnterImage, width - 300, height - 150, 300, 150);
+
       break;
     case System.PHASE.TUTORIAL:
-      console.log(tutorialManager.tutorialIndex);
-
       image(
         imageLib.getTutorialImage(tutorialManager.tutorialIndex),
         0,

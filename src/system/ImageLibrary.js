@@ -14,8 +14,10 @@ class ImageLibrary {
 
     this.tutorialImages = [];
 
+    this.pressEnterImage = loadImage(ImageLibrary.BASE_DIR + "Press.png");
+
     this.introImage = loadImage(ImageLibrary.BASE_DIR + "0타이틀.png");
-    this.creditsImage = loadImage(ImageLibrary.BASE_DIR + "Credits.png");
+    this.creditsImage = loadImage(ImageLibrary.BASE_DIR + "CreditsUpdated.png");
 
     this.itemImages = [
       loadImage(ImageLibrary.BASE_DIR + "image10.png"), // 속도
