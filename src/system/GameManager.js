@@ -71,6 +71,7 @@ class GameManager {
     this.isReady = false;
 
     bullets = [];
+    finalSoundPlayed = false;
 
     pg.clear();
     pg.fill(255);

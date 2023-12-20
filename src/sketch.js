@@ -11,6 +11,8 @@ let ink;
 let tutorialManager;
 let pgManager;
 let gm;
+let finalSound;
+let finalSoundPlayed = false;
 let imageLib = new ImageLibrary();
 
 let itemTutorialStartTime;
@@ -444,6 +446,11 @@ function draw() {
 
       // 게임 끝났을때의 ui
       if (gm.isEndGame) {
+        if (!finalSoundPlayed) {
+          finalSound.play();
+          finalSoundPlayed = true;
+        }
+
         let winner;
         let winnerImage;
         if (gm.inkAreaRatio > 50) {
@@ -710,16 +717,12 @@ function keyPressed() {
     }
   }
 
+  // 게임 끝났을때 다시
   if (system.phase == System.PHASE.MAIN_GAME && gm.isEndGame) {
     if (keyCode === ENTER) {
       maingameSound.stop();
+      finalSound.stop();
       system.changePhase(System.PHASE.MAIN_GAME);
     }
   }
-
-  // if (system.phase == System.PHASE.MAIN_GAME && gm.isEndGame) {
-  //   if (keyCode === ENTER) {
-  //     system.changePhase(System.PHASE.MAIN_GAME);
-  //   }
-  // }
 }
