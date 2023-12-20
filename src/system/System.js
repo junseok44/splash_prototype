@@ -31,8 +31,8 @@ class System {
         break;
       case System.PHASE.MAIN_GAME:
         this.phase = System.PHASE.MAIN_GAME;
-        this.gameManager.startMainGameCountdown();
         maingameSound.play();
+        this.gameManager.startMainGameCountdown();
         break;
       case System.PHASE.GAME_RESULT:
         maingameSound.stop();

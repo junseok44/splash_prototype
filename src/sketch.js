@@ -88,8 +88,8 @@ function setup() {
     pg,
   });
 
-  system.changePhase(System.PHASE.INTRO);
-  // system.changePhase(System.PHASE.MAIN_GAME);
+  // system.changePhase(System.PHASE.INTRO);
+  system.changePhase(System.PHASE.MAIN_GAME);
   // system.changePhase(System.PHASE.TUTORIAL);
   // system.changePhase(System.PHASE.MAIN_GAME);
 
@@ -416,8 +416,6 @@ function draw() {
         whistleSound.play();
         playWhistle = false;
       }
-
-      //maingameSound.play();
       image(imageLib.backgroundImage, 0, 0, width, height);
 
       pgManager.changePgPosition(
@@ -456,6 +454,7 @@ function draw() {
 
         winnerImage = imageLib.getResultImage(winner);
         image(winnerImage, 0, 0, width, height);
+        maingameSound.stop();
         return;
       }
 
@@ -713,7 +712,8 @@ function keyPressed() {
 
   if (system.phase == System.PHASE.MAIN_GAME) {
     if (keyCode === 85) {
-      // TODO: 게임 다시하가ㅣ.
+      maingameSound.stop();
+      system.changePhase(System.PHASE.MAIN_GAME);
     }
   }
 

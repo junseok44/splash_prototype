@@ -67,36 +67,39 @@ class GameManager {
     this.isDisplayRandomItemImage = false;
     bullets = [];
 
-    this.pg.clear();
-    this.pg.fill(255);
+    pg.clear();
+    pg.fill(255);
 
     if (this._randomItemDisplayTimer)
       clearInterval(this._randomItemDisplayTimer);
     if (this._calculateInkAreaRatioTimer)
       clearInterval(this._calculateInkAreaRatioTimer);
     if (this._countdownTimer) clearInterval(this._countdownTimer);
-
+    if (this._startCountdownTimer) clearInterval(this._startCountdownTimer);
+    if (this._startMainGameTimer) clearInterval(this._startMainGameTimer);
     player1.initialize();
     player2.initialize();
   }
 
   startMainGameCountdown() {
+    this.initializeMainGame();
+
+    this.isReady = false;
     this.countdown = 3;
 
-    let timer = setInterval(() => {
+    this._startCountdownTimer = setInterval(() => {
       this.timeLapse();
     }, 1000);
 
-    setTimeout(() => {
-      clearInterval(timer);
+    this._startMainGameTimer = setTimeout(() => {
+      clearInterval(this._startCountdownTimer);
       this.startMainGame();
     }, 3000);
   }
 
   startMainGame() {
     this.isReady = true;
-
-    this.initializeMainGame();
+    this.countdown = GameManager.gameCountDownSec;
 
     this._randomItemDisplayTimer = setInterval(() => {
       this.showRandomItemImage();

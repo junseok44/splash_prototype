@@ -64,7 +64,6 @@ class ImageLibrary {
   }
 
   getResultImage(winner) {
-    console.log(winner);
     if (winner instanceof Attacker) {
       return this.resultImages[0];
     } else {
