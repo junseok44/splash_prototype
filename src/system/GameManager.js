@@ -108,6 +108,10 @@ class GameManager {
   }
 
   startMainGame() {
+    if (playWhistle) {
+      whistleSound.play();
+      playWhistle = false;
+    }
     this.isReady = true;
     this.countdown = GameManager.gameCountDownSec;
 

@@ -414,10 +414,6 @@ function draw() {
       break;
 
     case System.PHASE.MAIN_GAME:
-      if (playWhistle) {
-        whistleSound.play();
-        playWhistle = false;
-      }
       image(imageLib.backgroundImage, 0, 0, width, height);
 
       pgManager.changePgPosition(
