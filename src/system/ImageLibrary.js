@@ -16,7 +16,7 @@ class ImageLibrary {
 
     this.pressEnterImage = loadImage(ImageLibrary.BASE_DIR + "Press.png");
 
-    this.introImage = loadImage(ImageLibrary.BASE_DIR + "0타이틀.png");
+    this.introImage = loadImage(ImageLibrary.BASE_DIR + "0타이틀2.png");
     this.creditsImage = loadImage(ImageLibrary.BASE_DIR + "CreditsUpdated.png");
 
     this.itemImages = [
@@ -43,15 +43,15 @@ class ImageLibrary {
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/3공격 조작법 타격.png"),
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/4수비 조작법.png"),
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/5수비 조작법 타격.png"),
-      loadImage(ImageLibrary.BASE_DIR + "/tutorial/6직접 타격 설명.png"),
+      loadImage(ImageLibrary.BASE_DIR + "/tutorial/6직접 타격 설명Updated.png"),
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/7아이템 종류.png"),
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/8아이템 체험.png"),
       loadImage(ImageLibrary.BASE_DIR + "/tutorial/9UI 설명.png"),
     ];
 
     this.resultImages = [
-      loadImage(ImageLibrary.BASE_DIR + "공격 승리.png"),
-      loadImage(ImageLibrary.BASE_DIR + "수비 승리.png"),
+      loadImage(ImageLibrary.BASE_DIR + "공격 플레이어 승리.png"),
+      loadImage(ImageLibrary.BASE_DIR + "수비 플레이어 승리.png"),
     ];
 
     this.backgroundImage = loadImage(
