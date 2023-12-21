@@ -257,7 +257,7 @@ class Player {
   respawn() {
     this.isDead = false;
     this.life = Player.playerLife;
-    comebackSound.play();
+    // comebackSound.play();
   }
 
   drawSpiral() {

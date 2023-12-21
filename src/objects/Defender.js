@@ -79,6 +79,7 @@ class Defender extends Player {
 
   //minimi  10개 생성
   minimiInitialize() {
+    console.log("minimiInitialize");
     this.circles = [];
 
     let numCircles = 10;
